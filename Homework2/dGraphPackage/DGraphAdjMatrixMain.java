@@ -1,7 +1,7 @@
 //-----------------------------------------------------
 // Author: 		Sivan Nachum
 // Date: 		Feb 26, 2021
-// Description:	Main program to interactively create a GraphAdjMatrix object
+// Description:	Main program to interactively create a DGraphAdjMatrix object
 //-----------------------------------------------------
 import java.util.InputMismatchException;
 import java.util.Scanner;

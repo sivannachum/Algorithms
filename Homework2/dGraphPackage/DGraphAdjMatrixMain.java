@@ -45,7 +45,7 @@ public class DGraphAdjMatrixMain {
 
             // initialize an empty graph
             else if (reply.equals("i")){
-                graph = new GraphAdjMatrix();
+                graph = new DGraphAdjMatrix();
             }
             // initialize a graph with a number of vertices specified by the user
             else if (reply.equals("iv")){

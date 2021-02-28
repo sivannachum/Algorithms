@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class GraphAdjMatrixFile {
+public class DGraphAdjMatrixFile {
     //-------------------------------------
     // Main: 		unit test - referenced w3 schools for basic file I/O at https://www.w3schools.com/java/java_files_read.asp
     // Input:		command line param: the name or filepath of the file to read the graph from

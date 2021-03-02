@@ -1,6 +1,6 @@
 //-----------------------------------------------------
 // Author: 		Sivan Nachum
-// Date: 		Feb 26, 2021
+// Date: 		March 1, 2021
 // Description:	Java code to create an undirectional Graph representation via an edge list
 //-----------------------------------------------------
 import java.util.Random;
@@ -15,9 +15,10 @@ import java.util.Scanner;
 import java.util.Collections;
 
 public class GraphEdgeList {
-    private int vertices;
+    private int numVertices;
     private ArrayList<Edge> edges;
 
+    // Constructors
     //-------------------------------------
     // Constructor
     // Name:    GraphEdgeList
@@ -26,7 +27,7 @@ public class GraphEdgeList {
     //          creates an object of type GraphEdgeList with no vertices or edges
     //-------------------------------------
     public GraphEdgeList(){
-        this.vertices = 0;
+        this.numVertices = 0;
         this.edges = new ArrayList<Edge>();
     }
 
@@ -37,8 +38,8 @@ public class GraphEdgeList {
     // Output:	none
     //          creates an object of type GraphEdgeList with the specified number of vertices
     //-------------------------------------
-    public GraphEdgeList(int vertices){
-        this.vertices = vertices;
+    public GraphEdgeList(int numVertices){
+        this.numVertices = numVertices;
         this.edges = new ArrayList<Edge>();
     }
 
@@ -49,17 +50,17 @@ public class GraphEdgeList {
     // Output:	none
     //          creates an object of type GraphEdgeList with the specified number of vertices and edges; the graph is random
     //-------------------------------------
-    public GraphEdgeList(int vertices, int numEdges){
-        this.vertices = vertices;
+    public GraphEdgeList(int numVertices, int numEdges){
+        this.numVertices = numVertices;
         this.edges = new ArrayList<Edge>();
-        if (vertices != 0){
+        if (numVertices != 0){
             int i = 0;
             int u = 0;
             int w = 0;
             Random rand = new Random();
             while (i < numEdges){
-                u = rand.nextInt(vertices);
-                w = rand.nextInt(vertices);
+                u = rand.nextInt(numVertices);
+                w = rand.nextInt(numVertices);
                 Edge connection = new Edge(u, w);
                 edges.add(connection);
                 i++;
@@ -67,6 +68,52 @@ public class GraphEdgeList {
         }
     }
 
+    // Functions for printing
+    //-------------------------------------
+    // Function
+    // Name:    printGraph
+    // Input: 	none
+    // Output:	none
+    //          prints out the edge list representation of the graph
+    //-------------------------------------
+	public void printGraph(){
+        String[] toPrint = new String[numVertices];
+        for (int vertex = 0; vertex < numVertices; vertex++) { 
+            toPrint[vertex] = "Edges exist from vertex " + vertex + " to: ";
+        }
+        for (Edge connection : edges) { 
+            toPrint[connection.getFirstVertex()] +=  connection.getSecondVertex() + " ";
+            if (connection.getFirstVertex() != connection.getSecondVertex()){
+                toPrint[connection.getSecondVertex()] += connection.getFirstVertex() + " ";
+            }
+        }
+        for (String s : toPrint){
+            System.out.println(s);
+        }
+	}
+
+    //-------------------------------------
+    // Function
+    // Name:    toString
+    // Input: 	none
+    // Output:	a String representing the graph
+    //-------------------------------------
+    public String toString(){
+        String result = "{\n" + numVertices + ",\n{\n";
+        boolean firstElem = true;
+        for (Edge connection : edges){
+            if (!firstElem) {
+                result += ",";
+            } else {
+                firstElem = false;
+            }
+            result += "{" + (connection.getFirstVertex()+1) + "," + (connection.getSecondVertex()+1) + "}";
+        }
+        result += "\n}\n}";
+        return result;
+    }
+
+    // Getters
     //-------------------------------------
     // Function
     // Name:    getNumVertices
@@ -74,9 +121,20 @@ public class GraphEdgeList {
     // Output:	the number of vertices in the graph
     //-------------------------------------
     public int getNumVertices(){
-        return vertices;
+        return numVertices;
     }
 
+    //-------------------------------------
+    // Function
+    // Name:    getEdgeList
+    // Input: 	none
+    // Output:	the graph's edge list
+    //-------------------------------------
+    public ArrayList<Edge> getEdgeList(){
+        return edges;
+    }
+
+    // Setters
     //-------------------------------------
     // Function
     // Name:    setNumVertices
@@ -85,10 +143,22 @@ public class GraphEdgeList {
     //          sets the number of vertices to the given input, creates a new cleared edge list
     //-------------------------------------
     public void setNumVertices(int numVertices){
-        vertices = numVertices;
+        this.numVertices = numVertices;
         edges = new ArrayList<Edge>();
     }
 
+    //-------------------------------------
+    // Function
+    // Name:    setEdgeList
+    // Input: 	an edge list
+    // Output:	none
+    //          sets the graph's edge list to the given input; note that the number of vertices is not adjusted
+    //-------------------------------------
+    public void setEdgeList(ArrayList<Edge> newList){
+        edges = newList;
+    }
+
+    // Modifiers
     //-------------------------------------
     // Function
     // Name:    addVertices
@@ -97,7 +167,7 @@ public class GraphEdgeList {
     //          adds num vertices to the graph
     //-------------------------------------
     public void addVertices(int num){
-        vertices += num;
+        numVertices += num;
     }
 
     //-------------------------------------
@@ -108,7 +178,7 @@ public class GraphEdgeList {
     //          deletes the vertex from the graph
     //-------------------------------------
     public void deleteVertex(int num){
-        vertices -= 1;
+        numVertices -= 1;
         for (int i = edges.size()-1; i >= 0; i--){
             Edge connection = edges.get(i);
             if (connection.getFirstVertex() == num || connection.getSecondVertex() == num){
@@ -127,27 +197,6 @@ public class GraphEdgeList {
                 edges.add(new Edge(connection.getFirstVertex(), connection.getSecondVertex()-1));
             }
         }
-    }
-
-    //-------------------------------------
-    // Function
-    // Name:    getEdgeList
-    // Input: 	none
-    // Output:	the graph's edge list
-    //-------------------------------------
-    public ArrayList<Edge> getEdgeList(){
-        return edges;
-    }
-
-    //-------------------------------------
-    // Function
-    // Name:    setEdgeList
-    // Input: 	an edge list
-    // Output:	none
-    //          sets the graph's edge list to the given input; note that the number of vertices is not adjusted
-    //-------------------------------------
-    public void setEdgeList(ArrayList<Edge> newList){
-        edges = newList;
     }
 
     //-------------------------------------
@@ -187,6 +236,7 @@ public class GraphEdgeList {
        }
     }
 
+    // Testers
     //-------------------------------------
     // Function - this could be sped up with binary search, which is the original reason I wanted
     //            to implement the Comparable interface for Edge but currently I am just using sequential search
@@ -215,7 +265,7 @@ public class GraphEdgeList {
     // Output:	true if the graph is empty (has no vertices or edges), false otherwise
     //-------------------------------------
     public boolean isEmpty(){
-        return vertices == 0;
+        return numVertices == 0;
         /*
         return edges.isEmpty();
         */
@@ -249,50 +299,7 @@ public class GraphEdgeList {
         return simple;
     }
 
-    //-------------------------------------
-    // Function
-    // Name:    printGraph
-    // Input: 	none
-    // Output:	none
-    //          prints out the edge list representation of the graph
-    //-------------------------------------
-	public void printGraph(){
-        String[] toPrint = new String[vertices];
-        for (int vertex = 0; vertex < vertices; vertex++) { 
-            toPrint[vertex] = "Edges exist from vertex " + vertex + " to: ";
-        }
-        for (Edge connection : edges) { 
-            toPrint[connection.getFirstVertex()] +=  connection.getSecondVertex() + " ";
-            if (connection.getFirstVertex() != connection.getSecondVertex()){
-                toPrint[connection.getSecondVertex()] += connection.getFirstVertex() + " ";
-            }
-        }
-        for (String s : toPrint){
-            System.out.println(s);
-        }
-	}
-
-    //-------------------------------------
-    // Function
-    // Name:    toString
-    // Input: 	none
-    // Output:	a String representing the graph
-    //-------------------------------------
-    public String toString(){
-        String result = "{\n" + vertices + ",\n{\n";
-        boolean firstElem = true;
-        for (Edge connection : edges){
-            if (!firstElem) {
-                result += ",";
-            } else {
-                firstElem = false;
-            }
-            result += "{" + (connection.getFirstVertex()+1) + "," + (connection.getSecondVertex()+1) + "}";
-        }
-        result += "\n}\n}";
-        return result;
-    }
-
+    // File I/O
     //-------------------------------------
     // Function - referenced w3schools code for basic file I/O at https://www.w3schools.com/java/java_files_create.asp
     // Name:    writeToFile
@@ -368,6 +375,7 @@ public class GraphEdgeList {
           }
     }
 
+    // Converters
     //-------------------------------------
     // Function
     // Name:    convertToAdjMatrix
@@ -376,7 +384,7 @@ public class GraphEdgeList {
     //          Note: multi-edges will be lost
     //-------------------------------------
     public GraphAdjMatrix convertToAdjMatrix(){
-        GraphAdjMatrix adjMatrix = new GraphAdjMatrix(vertices);
+        GraphAdjMatrix adjMatrix = new GraphAdjMatrix(numVertices);
         for (Edge connection : edges){
             adjMatrix.addEdge(connection.getFirstVertex(), connection.getSecondVertex());
         }
@@ -390,7 +398,7 @@ public class GraphEdgeList {
     // Output:	a GraphAdjList representation of the same graph
     //-------------------------------------
     public GraphAdjList convertToAdjList(){
-        GraphAdjList adjList = new GraphAdjList(vertices);
+        GraphAdjList adjList = new GraphAdjList(numVertices);
         for (Edge connection : edges){
             adjList.addEdge(connection.getFirstVertex(), connection.getSecondVertex());
         }

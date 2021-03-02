@@ -1,12 +1,12 @@
 //-----------------------------------------------------
 // Author: 		Sivan Nachum
-// Date: 		Feb 26, 2021
+// Date: 		March 1, 2021
 // Description:	Java code to represent an edge in an undirected graph
 //-----------------------------------------------------
 // Referenced Java oracle doc on Comparable interface: https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html
 public class Edge implements Comparable<Edge> {
-    int u;
-    int v;
+    private int u;
+    private int v;
     
     //-------------------------------------
     // Constructor
@@ -26,6 +26,7 @@ public class Edge implements Comparable<Edge> {
         }
     }
 
+    // Getters
     //-------------------------------------
     // Function
     // Name:    getFirstVertex
@@ -46,6 +47,7 @@ public class Edge implements Comparable<Edge> {
         return v;
     }
 
+    // Testers
     //-------------------------------------
     // Function - referenced Java oracle doc on Sets to realize that I could use make a HashSet<Edge> if I implemented this method
     //            (for some reason that didn't actually work out, but I still use this method nonetheless for checking if a graph is simple)

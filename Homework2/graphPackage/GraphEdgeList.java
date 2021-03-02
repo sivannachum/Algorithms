@@ -68,51 +68,6 @@ public class GraphEdgeList {
         }
     }
 
-    // Functions for printing
-    //-------------------------------------
-    // Function
-    // Name:    printGraph
-    // Input: 	none
-    // Output:	none
-    //          prints out the edge list representation of the graph
-    //-------------------------------------
-	public void printGraph(){
-        String[] toPrint = new String[numVertices];
-        for (int vertex = 0; vertex < numVertices; vertex++) { 
-            toPrint[vertex] = "Edges exist from vertex " + vertex + " to: ";
-        }
-        for (Edge connection : edges) { 
-            toPrint[connection.getFirstVertex()] +=  connection.getSecondVertex() + " ";
-            if (connection.getFirstVertex() != connection.getSecondVertex()){
-                toPrint[connection.getSecondVertex()] += connection.getFirstVertex() + " ";
-            }
-        }
-        for (String s : toPrint){
-            System.out.println(s);
-        }
-	}
-
-    //-------------------------------------
-    // Function
-    // Name:    toString
-    // Input: 	none
-    // Output:	a String representing the graph
-    //-------------------------------------
-    public String toString(){
-        String result = "{\n" + numVertices + ",\n{\n";
-        boolean firstElem = true;
-        for (Edge connection : edges){
-            if (!firstElem) {
-                result += ",";
-            } else {
-                firstElem = false;
-            }
-            result += "{" + (connection.getFirstVertex()+1) + "," + (connection.getSecondVertex()+1) + "}";
-        }
-        result += "\n}\n}";
-        return result;
-    }
-
     // Getters
     //-------------------------------------
     // Function
@@ -297,6 +252,51 @@ public class GraphEdgeList {
         }
 
         return simple;
+    }
+
+    // Functions for printing
+    //-------------------------------------
+    // Function
+    // Name:    printGraph
+    // Input: 	none
+    // Output:	none
+    //          prints out the edge list representation of the graph
+    //-------------------------------------
+	public void printGraph(){
+        String[] toPrint = new String[numVertices];
+        for (int vertex = 0; vertex < numVertices; vertex++) { 
+            toPrint[vertex] = "Edges exist from vertex " + vertex + " to: ";
+        }
+        for (Edge connection : edges) { 
+            toPrint[connection.getFirstVertex()] +=  connection.getSecondVertex() + " ";
+            if (connection.getFirstVertex() != connection.getSecondVertex()){
+                toPrint[connection.getSecondVertex()] += connection.getFirstVertex() + " ";
+            }
+        }
+        for (String s : toPrint){
+            System.out.println(s);
+        }
+	}
+
+    //-------------------------------------
+    // Function
+    // Name:    toString
+    // Input: 	none
+    // Output:	a String representing the graph
+    //-------------------------------------
+    public String toString(){
+        String result = "{\n" + numVertices + ",\n{\n";
+        boolean firstElem = true;
+        for (Edge connection : edges){
+            if (!firstElem) {
+                result += ",";
+            } else {
+                firstElem = false;
+            }
+            result += "{" + (connection.getFirstVertex()+1) + "," + (connection.getSecondVertex()+1) + "}";
+        }
+        result += "\n}\n}";
+        return result;
     }
 
     // File I/O

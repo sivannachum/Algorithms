@@ -91,51 +91,6 @@ public class GraphAdjMatrix {
         }
     }
 
-    // Functions for printing
-    //-------------------------------------
-    // Function
-    // Name:    printGraph
-    // Input: 	none
-    // Output:	none
-    //          prints out the adjacency matrix representation of the graph
-    //-------------------------------------
-	public void printGraph(){
-		for (int row = 0; row < numVertices; row++) { 
-            System.out.print("Edges exist from vertex " + row + " to: ");
-            for (int column = 0; column < numVertices; column++){
-                if (matrix[row][column] == 1){
-                    System.out.print(column + " ");
-                }
-            }
-			System.out.println(); 
-		} 
-	}
-
-    //-------------------------------------
-    // Function
-    // Name:    toString
-    // Input: 	none
-    // Output:	a String representing the graph
-    //-------------------------------------
-    public String toString(){
-        String result = "{\n" + numVertices + ",\n{\n";
-        boolean firstElem = true;
-        for (int row = 0; row < numVertices; row++){
-            for (int column = row; column < numVertices; column++){
-                if (matrix[row][column] == 1){
-                    if (!firstElem) {
-                        result += ",";
-                    } else {
-                        firstElem = false;
-                    }
-                    result += "{" + (row+1) + "," + (column+1) + "}";
-                }
-            }
-        }
-        result += "\n}\n}";
-        return result;
-    }
-
     // Getters
     //-------------------------------------
     // Function
@@ -323,6 +278,51 @@ public class GraphAdjMatrix {
             }
         }
         return simple;
+    }
+
+    // Functions for printing
+    //-------------------------------------
+    // Function
+    // Name:    printGraph
+    // Input: 	none
+    // Output:	none
+    //          prints out the adjacency matrix representation of the graph
+    //-------------------------------------
+	public void printGraph(){
+		for (int row = 0; row < numVertices; row++) { 
+            System.out.print("Edges exist from vertex " + row + " to: ");
+            for (int column = 0; column < numVertices; column++){
+                if (matrix[row][column] == 1){
+                    System.out.print(column + " ");
+                }
+            }
+			System.out.println(); 
+		} 
+	}
+
+    //-------------------------------------
+    // Function
+    // Name:    toString
+    // Input: 	none
+    // Output:	a String representing the graph
+    //-------------------------------------
+    public String toString(){
+        String result = "{\n" + numVertices + ",\n{\n";
+        boolean firstElem = true;
+        for (int row = 0; row < numVertices; row++){
+            for (int column = row; column < numVertices; column++){
+                if (matrix[row][column] == 1){
+                    if (!firstElem) {
+                        result += ",";
+                    } else {
+                        firstElem = false;
+                    }
+                    result += "{" + (row+1) + "," + (column+1) + "}";
+                }
+            }
+        }
+        result += "\n}\n}";
+        return result;
     }
 
     // File I/O

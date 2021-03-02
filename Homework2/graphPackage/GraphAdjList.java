@@ -78,49 +78,6 @@ public class GraphAdjList {
         }
     }
 
-    // Functions for printing
-    //-------------------------------------
-    // Function
-    // Name:    printGraph
-    // Input: 	none
-    // Output:	none
-    //          prints out the adjacency list representation of the graph
-    //-------------------------------------
-	public void printGraph(){
-		for (int vertex = 0; vertex < numVertices; vertex++) { 
-            System.out.print("Edges exist from vertex " + vertex + " to: ");
-            for (int connection = 0; connection < edges.get(vertex).size(); connection++){
-                System.out.print(edges.get(vertex).get(connection) + " ");
-            }
-			System.out.println(); 
-		} 
-	}
-
-    //-------------------------------------
-    // Function
-    // Name:    toString
-    // Input: 	none
-    // Output:	a String representing the graph
-    //-------------------------------------
-    public String toString(){
-        String result = "{\n" + numVertices + ",\n{\n";
-        boolean firstElem = true;
-        for (int vertex = 0; vertex < numVertices; vertex++){
-            for (int connection = 0; connection < edges.get(vertex).size(); connection++){
-                if (vertex <= edges.get(vertex).get(connection)){
-                    if (!firstElem) {
-                        result += ",";
-                    } else {
-                        firstElem = false;
-                    }
-                    result += "{" + (vertex+1) + "," + (edges.get(vertex).get(connection)+1) + "}";
-                }
-            }
-        }
-        result += "\n}\n}";
-        return result;
-    }
-
     // Getters
     //-------------------------------------
     // Function
@@ -308,6 +265,49 @@ public class GraphAdjList {
             connections.clear();
         }
         return simple;
+    }
+
+    // Functions for printing
+    //-------------------------------------
+    // Function
+    // Name:    printGraph
+    // Input: 	none
+    // Output:	none
+    //          prints out the adjacency list representation of the graph
+    //-------------------------------------
+	public void printGraph(){
+		for (int vertex = 0; vertex < numVertices; vertex++) { 
+            System.out.print("Edges exist from vertex " + vertex + " to: ");
+            for (int connection = 0; connection < edges.get(vertex).size(); connection++){
+                System.out.print(edges.get(vertex).get(connection) + " ");
+            }
+			System.out.println(); 
+		} 
+	}
+
+    //-------------------------------------
+    // Function
+    // Name:    toString
+    // Input: 	none
+    // Output:	a String representing the graph
+    //-------------------------------------
+    public String toString(){
+        String result = "{\n" + numVertices + ",\n{\n";
+        boolean firstElem = true;
+        for (int vertex = 0; vertex < numVertices; vertex++){
+            for (int connection = 0; connection < edges.get(vertex).size(); connection++){
+                if (vertex <= edges.get(vertex).get(connection)){
+                    if (!firstElem) {
+                        result += ",";
+                    } else {
+                        firstElem = false;
+                    }
+                    result += "{" + (vertex+1) + "," + (edges.get(vertex).get(connection)+1) + "}";
+                }
+            }
+        }
+        result += "\n}\n}";
+        return result;
     }
 
     // File I/O

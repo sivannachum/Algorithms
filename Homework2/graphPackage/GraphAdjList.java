@@ -391,7 +391,7 @@ public class GraphAdjList {
     // Function
     // Name:    convertToAdjMatrix
     // Input: 	none
-    // Output:	a GraphAdjList representation of the same graph
+    // Output:	a GraphAdjMatrix representation of the same graph
     //          Note: multi-edges will be lost
     //-------------------------------------
     public GraphAdjMatrix convertToAdjMatrix(){

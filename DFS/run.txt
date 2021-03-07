@@ -1,24 +1,8 @@
-// cd Homework3
+// Put the classes in a folder called Src and navigate to where that folder is located via cd commands
 
-// Since I have submitted the Graphs several times now, they are in a separate folder called Graphs.
-// You can compile them by:
-javac -d GraphClasses/ Graphs/*.java
-
-// TESTS, APPS and DEMOS
-// Individual tests for each class
-java -cp GraphClasses GraphEdgeListMain
-java -cp GraphClasses GraphAdjListMain
-java -cp GraphClasses GraphAdjMatrixMain
-
-
-// As for the DFS part of the homework, those are in the Src folder.
-// Note that the GraphAdjList and the GraphAdjListMain here are different than the ones in the Graphs folder
-// as the graph uses a LinkedList in its internal implementation and also contains functionality for DFS
-// You can compile them by:
+// Compile by:
 javac -d Classes/ Src/*.java
 
-// TESTS, APPS and DEMOS
-// Individual tests for each class
+// Run individual tests for each class:
 java -cp Classes GraphAdjListMain
 java -cp Classes GraphDFSAdjListMain
-

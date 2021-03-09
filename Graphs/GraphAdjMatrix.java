@@ -3,6 +3,7 @@
 // Date: 		March 1, 2021
 // Description:	Java code to create an undirectional Graph representation via an adjacency matrix
 //-----------------------------------------------------
+package Graphs;
 import java.util.Random;
 import java.io.FileWriter;
 import java.io.IOException;

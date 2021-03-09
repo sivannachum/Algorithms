@@ -4,6 +4,7 @@
 // Description:	Java code to represent an edge in an undirected graph
 //-----------------------------------------------------
 // Referenced Java oracle doc on Comparable interface: https://docs.oracle.com/javase/8/docs/api/java/lang/Comparable.html
+package Graphs;
 public class Edge implements Comparable<Edge> {
     private int u;
     private int v;

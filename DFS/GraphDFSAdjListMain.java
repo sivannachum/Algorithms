@@ -80,12 +80,12 @@ public class GraphDFSAdjListMain {
                 }
             }
 
+            else if (graph == null){
+                System.out.println("\nPlease initialize a graph first.");
+            }
+
             // insert an edge
             else if (reply.equals("e")){
-                if (graph == null){
-                    System.out.println("\nPlease initialize a graph first.");
-                    continue;
-                }
                 System.out.println("\nWhat vertices would you like to connect?\n" + 
                                     "Example input to connect vertices 2 and 1 by an edge: 2 1");
                 try{
@@ -103,10 +103,6 @@ public class GraphDFSAdjListMain {
 
             // remove an edge
             else if (reply.equals("re")){
-                if (graph == null){
-                    System.out.println("\nPlease initialize a graph first.");
-                    continue;
-                }
                 System.out.println("\nWhat vertices would you like to disconnect?\n" + 
                 "Example input to remove the edge between vertices 2 and 1: 2 1");
                 try{
@@ -124,10 +120,6 @@ public class GraphDFSAdjListMain {
 
             // check if the graph has a certain edge
             else if (reply.equals("he")){
-                if (graph == null){
-                    System.out.println("\nPlease initialize a graph first.");
-                    continue;
-                }
                 System.out.println("\nWhat vertices would you like to check for an edge between?\n" + 
                 "Example input to check for an edge between vertices 2 and 1: 2 1");
                 try{
@@ -150,10 +142,6 @@ public class GraphDFSAdjListMain {
 
             // insert vertices
             else if (reply.equals("v")){
-                if (graph == null){
-                    System.out.println("\nPlease initialize a graph first.");
-                    continue;
-                }
                 System.out.println("\nHow many vertices would you like to insert?");
                 try{
                     int v = scan.nextInt();
@@ -169,10 +157,6 @@ public class GraphDFSAdjListMain {
 
             // delete a vertex
             else if (reply.equals("dv")){
-                if (graph == null){
-                    System.out.println("\nPlease initialize a graph first.");
-                    continue;
-                }
                 System.out.println("\nWhat vertex would you like to delete?");
                 try{
                     int v = scan.nextInt();
@@ -188,10 +172,6 @@ public class GraphDFSAdjListMain {
 
             // run dfs on the graph
             else if (reply.equals("dfs")){
-                if (graph == null){
-                    System.out.println("\nPlease initialize a graph first.");
-                    continue;
-                }
                 System.out.println("\nWhat vertex would you like to start dfs from?");
                 try{
                     int v = scan.nextInt();
@@ -207,10 +187,6 @@ public class GraphDFSAdjListMain {
             
             // learn about graph properties
             else if (reply.equals("gp")){
-                if (graph == null){
-                    System.out.println("\nPlease initialize a graph first.");
-                    continue;
-                }
                 if (graph.isEmpty()){
                     System.out.println("\nGraph is empty.");
                 }
@@ -227,10 +203,6 @@ public class GraphDFSAdjListMain {
 
             // print the graph
             else if (reply.equals("p")){
-                if (graph == null){
-                    System.out.println("\nPlease initialize a graph first.");
-                    continue;
-                }
                 System.out.println();
                 graph.printGraph();
                 System.out.println();
@@ -239,10 +211,6 @@ public class GraphDFSAdjListMain {
 
             // read a graph from a file
             else if (reply.equals("rf")){
-                if (graph == null){
-                    System.out.println("\nPlease initialize a graph first.");
-                    continue;
-                }
                 System.out.println("\nWhat is the name of the file you would like to read the graph from?");
                 String filename = scan.nextLine();
                 graph.readFromFile(filename);
@@ -250,10 +218,6 @@ public class GraphDFSAdjListMain {
 
             // write the graph to a file
             else if (reply.equals("wf")){
-                if (graph == null){
-                    System.out.println("\nPlease initialize a graph first.");
-                    continue;
-                }
                 System.out.println("\nWhat is the name of the file you would like to write the graph to?");
                 String filename = scan.nextLine();
                 graph.writeToFile(filename);

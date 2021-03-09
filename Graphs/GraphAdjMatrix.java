@@ -291,10 +291,10 @@ public class GraphAdjMatrix extends Graph {
     //-------------------------------------
 	public void printGraph(){
 		for (int row = 0; row < numVertices; row++) { 
-            System.out.print("Edges exist from vertex " + row + " to: ");
+            System.out.print("Edges exist from vertex " + (row+1) + " to: ");
             for (int column = 0; column < numVertices; column++){
                 if (matrix[row][column] == 1){
-                    System.out.print(column + " ");
+                    System.out.print((column+1) + " ");
                 }
             }
 			System.out.println(); 

@@ -1,11 +1,11 @@
 //-----------------------------------------------------
 // Author: 		Sivan Nachum
-// Date: 		March 1, 2021
+// Date: 		March 5, 2021
 // Description:	Java code to create an undirectional Graph representation via an adjacency list
 //-----------------------------------------------------
 package Graphs;
 import java.util.Random;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Set;
 import java.util.HashSet;
 import java.io.FileWriter;
@@ -16,7 +16,7 @@ import java.util.Scanner;
 
 public class GraphAdjList extends Graph {
     private int numVertices;
-    private ArrayList<ArrayList<Integer>> edges;
+    private LinkedList<Integer>[] adjLists;
 
     // Constructors
     //-------------------------------------
@@ -26,9 +26,9 @@ public class GraphAdjList extends Graph {
     // Output:	none
     //          creates an object of type GraphAdjList with no vertices or edges
     //-------------------------------------
-    public GraphAdjList(){
-        this.numVertices = 0;
-        this.edges = new ArrayList<ArrayList<Integer>>();
+    public GraphAdjList(int numVertices){
+        this.numVertices = numVertices;
+        this.adjLists = null;
     }
 
     //-------------------------------------
@@ -40,10 +40,22 @@ public class GraphAdjList extends Graph {
     //-------------------------------------
     public GraphAdjList(int numVertices){
         this.numVertices = numVertices;
-        this.edges = new ArrayList<ArrayList<Integer>>();
+        this.adjLists = new LinkedList[numVertices];
         for (int i = 0; i < numVertices; i++){
-            edges.add(new ArrayList<Integer>());
+            adjLists[i] = new LinkedList<Integer>();
         }
+    }
+
+    //-------------------------------------
+    // Constructor
+    // Name:    GraphAdjList
+    // Input: 	the adjacency lists for the graph
+    // Output:	none
+    //          creates an object of type GraphAdjList with the given adjacency lists and the corresponding number of vertices
+    //-------------------------------------
+    public GraphAdjList(LinkedList<Integer>[] adjLists){
+        this.numVertices = adjLists.length;
+        this.adjLists = adjLists;
     }
 
     //-------------------------------------
@@ -55,9 +67,9 @@ public class GraphAdjList extends Graph {
     //-------------------------------------
     public GraphAdjList(int numVertices, int numEdges){
         this.numVertices = numVertices;
-        this.edges = new ArrayList<ArrayList<Integer>>();
+        this.adjLists = new LinkedList[numVertices];
         for (int i = 0; i < numVertices; i++){
-            edges.add(new ArrayList<Integer>());
+            adjLists[i] = new LinkedList<Integer>();
         }
         if (numVertices != 0){
             int i = 0;
@@ -68,11 +80,11 @@ public class GraphAdjList extends Graph {
                 u = rand.nextInt(numVertices);
                 w = rand.nextInt(numVertices);
                 if (u != w){
-                    edges.get(u).add(w);
-                    edges.get(w).add(u);
+                    adjLists[u].add(w);
+                    adjLists[w].add(u);
                 }
                 else {
-                    edges.get(u).add(w);
+                    adjLists[u].add(w);
                 }
                 i++;
             }
@@ -92,12 +104,32 @@ public class GraphAdjList extends Graph {
 
     //-------------------------------------
     // Function
-    // Name:    getAdjacencyList
+    // Name:    getAdjacencyLists
     // Input: 	none
     // Output:	the graph's adjacency list
     //-------------------------------------
-    public ArrayList<ArrayList<Integer>> getAdjacencyList(){
-        return edges;
+    public LinkedList<Integer>[] getAdjacencyLists(){
+        return adjLists;
+    }
+
+    //-------------------------------------
+    // Function
+    // Name:    getNeighbors
+    // Input: 	the number of the vertex you want the neighbors of
+    // Output:	the adjacency list of that vertex (which will show who that vertex is connected to)
+    //-------------------------------------
+    public LinkedList<Integer> getNeighbors(int i){
+        return adjLists[i];
+    }
+
+    //-------------------------------------
+    // Function
+    // Name:    getNumNeighbors
+    // Input: 	the number of the vertex you want the number of neighbors of
+    // Output:	the number of neighbors that vertex has
+    //-------------------------------------
+    public int getNumNeighbors(int i){
+        return adjLists[i].size();
     }
 
     // Setters
@@ -110,9 +142,9 @@ public class GraphAdjList extends Graph {
     //-------------------------------------
     public void setNumVertices(int numVertices){
         this.numVertices = numVertices;
-        edges = new ArrayList<ArrayList<Integer>>();
+        adjLists = new LinkedList[numVertices];
         for (int i = 0; i < numVertices; i++){
-            edges.add(new ArrayList<Integer>());
+            adjLists[i] = new LinkedList<Integer>();
         }
     }
 
@@ -123,9 +155,24 @@ public class GraphAdjList extends Graph {
     // Output:	none
     //          sets the graph's adjacency list to the given input, updates the number of vertices accordingly
     //-------------------------------------
-    public void setAdjacencyList(ArrayList<ArrayList<Integer>> newList){
-        numVertices = newList.size();
-        edges = newList;
+    public void setAdjacencyList(LinkedList<Integer>[] newList){
+        numVertices = newList.length;
+        adjLists = newList;
+    }
+
+    // Depth First Search
+    //-------------------------------------
+    // Function
+    // Name:    dfs
+    // Input: 	the root vertex from which to conduct depth first search
+    // Output:	none
+    //          conducts depth-first search by creating a GraphDFSAdjList object and having it do the dfs
+    //-------------------------------------
+    public void dfs(int root){
+        GraphDFSAdjList graph = new GraphDFSAdjList(adjLists);
+        graph.dfsR(root);
+        System.out.println();
+        graph.printVisitedVertices();
     }
 
     // Modifiers
@@ -137,9 +184,16 @@ public class GraphAdjList extends Graph {
     //          adds num vertices to the graph
     //-------------------------------------
     public void addVertices(int num){
-        for (int i = 0; i < num; i++){
-            edges.add(new ArrayList<Integer>());
+        LinkedList<Integer>[] newAdjLists = new LinkedList[numVertices+num];
+        int i = 0;
+        for (i = 0; i < numVertices; i++){
+            newAdjLists[i] = adjLists[i];
         }
+        while (i < numVertices+num){
+            newAdjLists[i] = new LinkedList<Integer>();
+            i++;
+        }
+        adjLists = newAdjLists;
         numVertices += num;
     }
 
@@ -151,23 +205,36 @@ public class GraphAdjList extends Graph {
     //          deletes the vertex from the graph
     //-------------------------------------
     public void deleteVertex(int num){
-        edges.remove(num);
         numVertices -= 1;
-        for (int i = 0; i < numVertices; i++){
-            int index = edges.get(i).indexOf(num);
+        LinkedList<Integer>[] newAdjLists = new LinkedList[numVertices];
+        int i = 0;
+        for (i = 0; i < numVertices; i++){
+            if (i < num){
+                newAdjLists[i] = adjLists[i];
+            } else {
+                break;
+            }
+        }
+        while (i < numVertices){
+            newAdjLists[i] = adjLists[i+1];
+            i++;
+        }
+        for (i = 0; i < numVertices; i++){
+            int index = newAdjLists[i].indexOf(num);
             while (index != -1){
-                edges.get(i).remove(index);
-                index = edges.get(i).indexOf(num);
+                newAdjLists[i].remove(index);
+                index = newAdjLists[i].indexOf(num);
             }
             for (int j = num+1; j <= numVertices; j++){
-                index = edges.get(i).indexOf(j);
+                index = newAdjLists[i].indexOf(j);
                 while (index != -1){
-                    edges.get(i).remove(index);
-                    edges.get(i).add(j-1);
-                    index = edges.get(i).indexOf(j);
+                    newAdjLists[i].remove(index);
+                    newAdjLists[i].add(j-1);
+                    index = newAdjLists[i].indexOf(j);
                 }
             }
         }
+        adjLists = newAdjLists;
     }
 
     //-------------------------------------
@@ -179,11 +246,11 @@ public class GraphAdjList extends Graph {
     //-------------------------------------
     public void addEdge(int u, int v){
         if (u != v){
-            edges.get(u).add(v);
-            edges.get(v).add(u);
+            adjLists[u].add(v);
+            adjLists[v].add(u);
         }
         else {
-            edges.get(u).add(v);
+            adjLists[u].add(v);
         }
     }
 
@@ -195,14 +262,14 @@ public class GraphAdjList extends Graph {
     //          removes one undirected edge between the vertices u and v in the adjacency list
     //-------------------------------------
     public void removeEdge(int u, int v){
-        int index = edges.get(u).indexOf(v);
+        int index = adjLists[u].indexOf(v);
         if (index != -1){
-            edges.get(u).remove(index);
+            adjLists[u].remove(index);
         }
         if (u != v){
-            index = edges.get(v).indexOf(u);
+            index = adjLists[v].indexOf(u);
             if (index != -1){
-                edges.get(v).remove(index);
+                adjLists[v].remove(index);
             }
         }
     }
@@ -215,7 +282,7 @@ public class GraphAdjList extends Graph {
     // Output:	true if the vertices have an edge between them, false otherwise
     //-------------------------------------
     public boolean hasEdge(int u, int v){
-        return edges.get(u).contains(v);
+        return adjLists[u].contains(v);
     }
 
     //-------------------------------------
@@ -229,7 +296,7 @@ public class GraphAdjList extends Graph {
         /*
         boolean empty = true;
         for (int i = 0; i < numVertices; i++){
-            if (!edges.get(i).isEmpty()){
+            if (!adjLists[i].isEmpty()){
                 empty = false;
                 break;
             }
@@ -249,17 +316,17 @@ public class GraphAdjList extends Graph {
         Set<Integer> connections = new HashSet<Integer>();
         for (int i = 0; i < numVertices; i++){
             // contains self-loop
-            if (edges.get(i).contains(i)){
+            if (adjLists[i].contains(i)){
                 simple = false;
                 break;
             }
 
-            for (int j = 0; j < edges.get(i).size(); j++){
-                connections.add(edges.get(i).get(j));
+            for (int j = 0; j < adjLists[i].size(); j++){
+                connections.add(adjLists[i].get(j));
             }
 
             // contains multi-edge
-            if (connections.size() != edges.get(i).size()){
+            if (connections.size() != adjLists[i].size()){
                 simple = false;
                 break;
             }
@@ -278,9 +345,9 @@ public class GraphAdjList extends Graph {
     //-------------------------------------
 	public void printGraph(){
 		for (int vertex = 0; vertex < numVertices; vertex++) { 
-            System.out.print("Edges exist from vertex " + vertex + " to: ");
-            for (int connection = 0; connection < edges.get(vertex).size(); connection++){
-                System.out.print(edges.get(vertex).get(connection) + " ");
+            System.out.print("Edges exist from vertex " + (vertex+1) + " to: ");
+            for (int connection = 0; connection < adjLists[vertex].size(); connection++){
+                System.out.print((adjLists[vertex].get(connection)+1) + " ");
             }
 			System.out.println(); 
 		} 
@@ -296,14 +363,14 @@ public class GraphAdjList extends Graph {
         String result = "{\n" + numVertices + ",\n{\n";
         boolean firstElem = true;
         for (int vertex = 0; vertex < numVertices; vertex++){
-            for (int connection = 0; connection < edges.get(vertex).size(); connection++){
-                if (vertex <= edges.get(vertex).get(connection)){
+            for (int connection = 0; connection < adjLists[vertex].size(); connection++){
+                if (vertex <= adjLists[vertex].get(connection)){
                     if (!firstElem) {
                         result += ",";
                     } else {
                         firstElem = false;
                     }
-                    result += "{" + (vertex+1) + "," + (edges.get(vertex).get(connection)+1) + "}";
+                    result += "{" + (vertex+1) + "," + (adjLists[vertex].get(connection)+1) + "}";
                 }
             }
         }
@@ -398,9 +465,9 @@ public class GraphAdjList extends Graph {
     public GraphAdjMatrix convertToAdjMatrix(){
         GraphAdjMatrix adjMatrix = new GraphAdjMatrix(numVertices);
         for (int vertex = 0; vertex < numVertices; vertex++){
-            for (int connection = 0; connection < edges.get(vertex).size(); connection++){
-                if (vertex <= edges.get(vertex).get(connection)){
-                    adjMatrix.addEdge(vertex, edges.get(vertex).get(connection));
+            for (int connection = 0; connection < adjLists[vertex].size(); connection++){
+                if (vertex <= adjLists[vertex].get(connection)){
+                    adjMatrix.addEdge(vertex, adjLists[vertex].get(connection));
                 }
             }
         }
@@ -416,9 +483,9 @@ public class GraphAdjList extends Graph {
     public GraphEdgeList convertToEdgeList(){
         GraphEdgeList edgeList = new GraphEdgeList(numVertices);
         for (int vertex = 0; vertex < numVertices; vertex++){
-            for (int connection = 0; connection < edges.get(vertex).size(); connection++){
-                if (vertex <= edges.get(vertex).get(connection)){
-                    edgeList.addEdge(vertex, edges.get(vertex).get(connection));
+            for (int connection = 0; connection < adjLists[vertex].size(); connection++){
+                if (vertex <= adjLists[vertex].get(connection)){
+                    edgeList.addEdge(vertex, adjLists[vertex].get(connection);
                 }
             }
         }

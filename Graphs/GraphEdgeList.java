@@ -266,12 +266,12 @@ public class GraphEdgeList extends Graph {
 	public void printGraph(){
         String[] toPrint = new String[numVertices];
         for (int vertex = 0; vertex < numVertices; vertex++) { 
-            toPrint[vertex] = "Edges exist from vertex " + vertex + " to: ";
+            toPrint[vertex] = "Edges exist from vertex " + (vertex+1) + " to: ";
         }
         for (Edge connection : edges) { 
-            toPrint[connection.getFirstVertex()] +=  connection.getSecondVertex() + " ";
+            toPrint[connection.getFirstVertex()] +=  (connection.getSecondVertex()+1) + " ";
             if (connection.getFirstVertex() != connection.getSecondVertex()){
-                toPrint[connection.getSecondVertex()] += connection.getFirstVertex() + " ";
+                toPrint[connection.getSecondVertex()] += (connection.getFirstVertex()+1) + " ";
             }
         }
         for (String s : toPrint){

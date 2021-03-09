@@ -34,6 +34,7 @@ public class GraphAdjListMain {
                                 "he = check if the graph has a certain edge\n" +
                                 "v = insert vertices\n" +
                                 "dv = delete a vertex\n" +
+                                "dfs = run dfs from a selected vertex\n" +
                                 "gp = learn about graph properties\n" +
                                 "p = print graph\n" +
                                 "rf = read a graph from a file\n" +
@@ -91,15 +92,15 @@ public class GraphAdjListMain {
             // insert an edge
             else if (reply.equals("e")){
                 System.out.println("\nWhat vertices would you like to connect?\n" + 
-                                    "Example input to connect vertices 0 and 1 by an edge: 0 1");
+                                    "Example input to connect vertices 2 and 1 by an edge: 2 1");
                 try{
                     int u = scan.nextInt();
                     int w = scan.nextInt();
-                    if (u < 0 || w < 0 || u > graph.getNumVertices()-1 || w > graph.getNumVertices()-1){
+                    if (u < 1 || w < 1 || u > graph.getNumVertices() || w > graph.getNumVertices()){
                         System.out.println("\nImproper input, try again.");
                         continue;
                     }
-                    graph.addEdge(u, w); 
+                    graph.addEdge(u-1, w-1); 
                 } catch(InputMismatchException e) {
                     System.out.println("\nImproper input, try again.");
                 }
@@ -108,15 +109,15 @@ public class GraphAdjListMain {
             // remove an edge
             else if (reply.equals("re")){
                 System.out.println("\nWhat vertices would you like to disconnect?\n" + 
-                "Example input to remove the edge between vertices 0 and 1: 0 1");
+                "Example input to remove the edge between vertices 2 and 1: 2 1");
                 try{
                     int u = scan.nextInt();
                     int w = scan.nextInt();
-                    if (u < 0 || w < 0 || u > graph.getNumVertices()-1 || w > graph.getNumVertices()-1){
+                    if (u < 1 || w < 1 || u > graph.getNumVertices() || w > graph.getNumVertices()){
                         System.out.println("\nImproper input, try again.");
                         continue;
                     }
-                    graph.removeEdge(u, w); 
+                    graph.removeEdge(u-1, w-1); 
                 } catch(InputMismatchException e) {
                     System.out.println("\nImproper input, try again.");
                 }
@@ -125,15 +126,15 @@ public class GraphAdjListMain {
             // check if the graph has a certain edge
             else if (reply.equals("he")){
                 System.out.println("\nWhat vertices would you like to check for an edge between?\n" + 
-                "Example input to check for an edge between vertices 0 and 1: 0 1");
+                "Example input to check for an edge between vertices 2 and 1: 2 1");
                 try{
                     int u = scan.nextInt();
                     int w = scan.nextInt();
-                    if (u < 0 || w < 0 || u > graph.getNumVertices()-1 || w > graph.getNumVertices()-1){
+                    if (u < 1 || w < 1 || u > graph.getNumVertices() || w > graph.getNumVertices()){
                         System.out.println("\nImproper input, try again.");
                         continue;
                     }
-                    if (graph.hasEdge(u, w)){
+                    if (graph.hasEdge(u-1, w-1)){
                         System.out.println("\nThere is an edge between vertex " + u + " and vertex " + w +".");
                     }
                     else{
@@ -164,11 +165,30 @@ public class GraphAdjListMain {
                 System.out.println("\nWhat vertex would you like to delete?");
                 try{
                     int v = scan.nextInt();
-                    if (v < 0 || v > graph.getNumVertices()-1){
+                    if (v < 1 || v > graph.getNumVertices()){
                         System.out.println("\nImproper input, try again.");
                         continue;
                     }
-                    graph.deleteVertex(v); 
+                    graph.deleteVertex(v-1); 
+                } catch(InputMismatchException e) {
+                    System.out.println("\nImproper input, try again.");
+                }
+            }
+
+            // run dfs on the graph
+            else if (reply.equals("dfs")){
+                if (graph == null){
+                    System.out.println("\nPlease initialize a graph first.");
+                    continue;
+                }
+                System.out.println("\nWhat vertex would you like to start dfs from?");
+                try{
+                    int v = scan.nextInt();
+                    if (v < 1 || v > graph.getNumVertices()){
+                        System.out.println("\nImproper input, try again.");
+                        continue;
+                    }
+                    graph.dfs(v-1);
                 } catch(InputMismatchException e) {
                     System.out.println("\nImproper input, try again.");
                 }

@@ -3,6 +3,7 @@
 // Date: 		March 1, 2021
 // Description:	Java code to create an undirectional Graph representation via an edge list
 //-----------------------------------------------------
+package Graphs;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.Set;

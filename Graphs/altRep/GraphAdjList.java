@@ -3,6 +3,7 @@
 // Date: 		March 5, 2021
 // Description:	Java code to create an undirectional Graph representation via an adjacency list
 //-----------------------------------------------------
+package Graphs;
 import java.util.Random;
 import java.util.LinkedList;
 import java.util.Set;
@@ -13,7 +14,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class GraphAdjList {
+public class GraphAdjList extends Graph {
     private int numVertices;
     private LinkedList<Integer>[] adjLists;
 

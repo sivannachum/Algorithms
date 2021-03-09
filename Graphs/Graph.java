@@ -3,6 +3,7 @@
 // Date: 		March 7, 2021
 // Description:	Java code for an abstract class representing an undirectional Graph
 //-----------------------------------------------------
+package Graphs;
 public abstract class Graph {
     // Getters
     //-------------------------------------

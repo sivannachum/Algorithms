@@ -3,6 +3,7 @@
 // Date: 		March 7, 2021
 // Description:	Main program to interactively create a Graph object
 //-----------------------------------------------------
+package Graphs;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 

@@ -1,31 +1,31 @@
 //-----------------------------------------------------
 // Author: 		Sivan Nachum
-// Date: 		March 9, 2021
-// Description:	Main program to interactively create a GraphAdjList object
+// Date: 		March 12, 2021
+// Description:	Main program to interactively create a DGraphAdjList object
 //-----------------------------------------------------
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.LinkedList;
 
-public class GraphAdjListMain {
+public class DGraphAdjListMain {
     //-------------------------------------
     // Main: 		unit test
     // Input:		given over time; program asks the user what they want to do and does it,
     //              then asks them again what they want to do
     // Output:	    depends on what the user asks the program to do;
-    //              the program can initialize a graph with a number of vertices specified by the user, initialize a random graph,
-    //              add or remove edges between the vertices of the graph, check for an edge in the graph, add or remove vertices in the graph,
-    //              run dfs on the graph, find the connected components of the graph,
-    //              print the graph or properties of it, write the graph to a file or read the graph from a file, or quit
-    // Method:	    keeps a GraphAdjList object and invokes its methods to perform requests
+    //              the program can initialize an empty graph,
+    //              initialize a graph with a number of vertices specified by the user, initialize a random graph,
+    //              add or remove edges between the vertices of a graph, check for the existence of an edge, add or remove vertices,
+    //              print the graph or properties of it, or quit
+    // Method:	    keeps a DGraphAdjList object and invokes its methods to perform requests
     //-------------------------------------
     public static void main(String[] args) {
-        GraphAdjList graph = null;
+        DGraphAdjList graph = null;
         Scanner scan = new Scanner(System.in);
         String reply;
 
         while (true){
             System.out.print("\nWhat would you like to do?\n" + 
+                                "i = initialize an empty graph\n" +
                                 "iv = initialize a graph with a set number of vertices\n" +
                                 "r = create a random graph\n" +
                                 "e = insert an edge\n" +
@@ -34,7 +34,7 @@ public class GraphAdjListMain {
                                 "v = insert vertices\n" +
                                 "dv = delete a vertex\n" +
                                 "dfs = run dfs from a selected vertex\n" +
-                                "c = get the connected components of the graph\n" +
+                                "tr = get the dfs tree for a selected vertex\n" +
                                 "gp = learn about graph properties\n" +
                                 "p = print graph\n" +
                                 "rf = read a graph from a file\n" +
@@ -49,6 +49,10 @@ public class GraphAdjListMain {
                 break;
             }
 
+            // initialize an empty graph
+            else if (reply.equals("i")){
+                graph = new DGraphAdjList();
+            }
             // initialize a graph with a number of vertices specified by the user
             else if (reply.equals("iv")){
                 System.out.println("\nHow many vertices would you like?");
@@ -58,7 +62,7 @@ public class GraphAdjListMain {
                         System.out.println("\nImproper input, try again.");
                         continue;
                     }
-                    graph = new GraphAdjList(V);
+                    graph = new DGraphAdjList(V);
                 } catch(InputMismatchException e) {
                     System.out.println("\nImproper input, try again.");
                 }
@@ -75,7 +79,7 @@ public class GraphAdjListMain {
                         System.out.println("\nImproper input, try again.");
                         continue;
                     }
-                    graph = new GraphAdjList(V, E);
+                    graph = new DGraphAdjList(V, E);
                 } catch(InputMismatchException e) {
                     System.out.println("\nImproper input, try again.");
                 }
@@ -186,22 +190,23 @@ public class GraphAdjListMain {
                 }
             }
 
-            // get the connected components of the graph
-            else if (reply.equals("c")){
-                LinkedList<LinkedList<Integer>> components = graph.connectedComponents();
-                System.out.println();
-                int counter = components.size();
-                int i = components.size()-1;
-                while (counter > 0){
-                    LinkedList<Integer> oldComponent = components.remove(i);
-                    LinkedList<Integer> newComponent = new LinkedList<Integer>();
-                    for (int v : oldComponent){
-                        newComponent.add(v+1);
+            // get the dfs tree for a selected vertex
+            else if (reply.equals("tr")){
+                System.out.println("\nWhat vertex would you like to start dfs from?");
+                try{
+                    int v = scan.nextInt();
+                    if (v < 1 || v > graph.getNumVertices()){
+                        System.out.println("\nImproper input, try again.");
+                        continue;
                     }
-                    components.addFirst(newComponent);
-                    counter--;
+                    DGraphAdjList tempGraph = graph.dfs(v-1);
+                    System.out.println("\nTree Graph:");
+                    tempGraph.printGraph();
+                    System.out.println();
+                    System.out.println(tempGraph);
+                } catch(InputMismatchException e) {
+                    System.out.println("\nImproper input, try again.");
                 }
-                System.out.println(components);
             }
             
             // learn about graph properties
@@ -211,18 +216,6 @@ public class GraphAdjListMain {
                 }
                 else{
                     System.out.println("\nGraph is not empty.");
-                }
-                if (graph.isSimple()){
-                    System.out.println("Graph is simple.");
-                }
-                else{
-                    System.out.println("Graph is not simple.");
-                }
-                if (graph.isConnected()){
-                    System.out.println("Graph is connected.");
-                }
-                else{
-                    System.out.println("Graph is not connected.");
                 }
             }
 

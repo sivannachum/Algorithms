@@ -1,13 +1,15 @@
 //-----------------------------------------------------
 // Author: 		Sivan Nachum
-// Date: 		March 6, 2021
+// Date: 		March 9, 2021
 // Description:	Java code to create an undirectional Graph representation via an adjacency list
 //              The graph can run the DFS algorithm and keeps track of which vertices have been visited
+//              Note: this class is generally only for use within the GraphAdjList class
 //-----------------------------------------------------
 import java.util.LinkedList;
 
 public class GraphDFSAdjList extends GraphAdjList {
     private boolean[] visited;
+    private LinkedList<LinkedList<Integer>> components;
 
     // Constructors
     //-------------------------------------
@@ -23,6 +25,7 @@ public class GraphDFSAdjList extends GraphAdjList {
         for (int i = 0; i < numVertices; i++){
             visited[i] = false;
         }
+        components = new LinkedList<LinkedList<Integer>>();
     }
 
     //-------------------------------------
@@ -39,6 +42,7 @@ public class GraphDFSAdjList extends GraphAdjList {
         for (int i = 0; i < numVertices; i++){
             visited[i] = false;
         }
+        components = new LinkedList<LinkedList<Integer>>();
     }
 
     //-------------------------------------
@@ -54,6 +58,7 @@ public class GraphDFSAdjList extends GraphAdjList {
         for (int i = 0; i < numVertices; i++){
             visited[i] = false;
         }
+        components = new LinkedList<LinkedList<Integer>>();
     }
 
     // Getters
@@ -74,14 +79,37 @@ public class GraphDFSAdjList extends GraphAdjList {
     // Output:	the vertices which have been visited
     //-------------------------------------
     public LinkedList<Integer> getVisitedVertices(){
-        int length = visited.length;
         LinkedList<Integer> visitedVertices = new LinkedList<Integer>();
-        for (int i = 0; i < length; i++){
-            if (visited[i]){
-                visitedVertices.add(i);
+        for (int vertex = 0; vertex < visited.length; vertex++){
+            if (visited[vertex]){
+                visitedVertices.add(vertex);
             }
         }
         return visitedVertices;
+    }
+
+    //-------------------------------------
+    // Function
+    // Name:    connectedComponents
+    // Input:   none
+    // Output:	returns lists of vertices belonging to the connected components of the graph
+    //          the result is a list of components, each component being a list of vertex ids
+    //-------------------------------------
+    public LinkedList<LinkedList<Integer>> connectedComponents(){
+        for (int vertex = 0; vertex < super.getNumVertices(); vertex++){
+            if (!isVisited(vertex)){
+                dfsR(vertex);
+                LinkedList<Integer> newComponent = getVisitedVertices();
+                for (LinkedList<Integer> prevComponents : components){
+                    for (int v : prevComponents){
+                        int index = newComponent.indexOf(v);
+                        newComponent.remove(index);
+                    }
+                }
+                components.add(newComponent);
+            }
+        }
+        return components;
     }
 
     // Setters
@@ -90,7 +118,8 @@ public class GraphDFSAdjList extends GraphAdjList {
     // Name:    setNumVertices
     // Input: 	the new number of vertices for the graph
     // Output:	none
-    //          sets the number of vertices to the given input, creates a new cleared adjacency list and visited array
+    //          sets the number of vertices to the given input, 
+    //          creates a new cleared adjacency list, visited array, and components element
     //-------------------------------------
     @Override
     public void setNumVertices(int numVertices){
@@ -99,6 +128,7 @@ public class GraphDFSAdjList extends GraphAdjList {
         for (int i = 0; i < numVertices; i++){
             visited[i] = false;
         }
+        components = new LinkedList<LinkedList<Integer>>();
     }
 
     //-------------------------------------
@@ -107,7 +137,7 @@ public class GraphDFSAdjList extends GraphAdjList {
     // Input: 	an adjacency list
     // Output:	none
     //          sets the graph's adjacency list to the given input, updates the number of vertices accordingly, 
-    //          and creates a new cleared visited array
+    //          and creates a new cleared visited array and components element
     //-------------------------------------
     @Override
     public void setAdjacencyList(LinkedList<Integer>[] newList){
@@ -117,6 +147,7 @@ public class GraphDFSAdjList extends GraphAdjList {
         for (int i = 0; i < numVertices; i++){
             visited[i] = false;
         }
+        components = new LinkedList<LinkedList<Integer>>();
     }
 
     //-------------------------------------
@@ -131,6 +162,7 @@ public class GraphDFSAdjList extends GraphAdjList {
     }
 
     // Testers
+    //-------------------------------------
     // Function
     // Name:    isVisited
     // Input: 	a vertex number
@@ -138,33 +170,53 @@ public class GraphDFSAdjList extends GraphAdjList {
     //-------------------------------------
     public boolean isVisited(int vertex){
         return visited[vertex];
-    }    
-
-    // Depth First Search
-    //-------------------------------------
-    // Function
-    // Name:    dfs
-    // Input: 	the root vertex from which to conduct depth first search
-    // Output:	none
-    //-------------------------------------
-    @Override
-    public void dfs(int root){
-        for (int i = 0; i < visited.length; i++){
-            visited[i] = false;
-        }
-        dfsHelper(root);
-        System.out.println();
-        printVisitedVertices();
     }
 
     //-------------------------------------
     // Function
-    // Name:    dfsHelper
+    // Name:    isConnected
+    // Input: 	none
+    // Output:	true if the graph is connected, false otherwise
+    //          an undirected graph is connected if for every pair of nodes u and v, there is a path between u and v
+    //-------------------------------------
+    public boolean isConnected(){
+        if (super.getNumVertices() <= 0){
+            return true;
+        }
+        else {
+            LinkedList<Integer> dfsResult = dfs(0);
+            return super.getNumVertices() == dfsResult.size();
+        }
+    }
+
+    // Depth First Search
+    //-------------------------------------
+    // Function
+    // Name:    dfsR
     // Input: 	the vertex that we are looking at currently
     // Output:	none
     //          Conducts depth-first search recursively
     //-------------------------------------
-    public void dfsHelper(int vertex){
+    public void dfsR(int vertex){
+        if (isVisited(vertex)){
+            return;
+        }
+        setVisited(vertex);
+        LinkedList<Integer> neighbors = super.getNeighbors(vertex);
+        for (int i = 0; i < super.getNumNeighbors(vertex); i++){
+            dfsR(neighbors.get(i));
+        }
+    }
+
+    //-------------------------------------
+    // Function
+    // Name:    dfsPrintR
+    // Input: 	the vertex that we are looking at currently
+    // Output:	none
+    //          Conducts depth-first search recursively
+    //          prints updates along the way
+    //-------------------------------------
+    public void dfsPrintR(int vertex){
         if (isVisited(vertex)){
             System.out.println("Vertex " + (vertex+1) + " already visited");
             return;
@@ -175,7 +227,7 @@ public class GraphDFSAdjList extends GraphAdjList {
 
         LinkedList<Integer> neighbors = super.getNeighbors(vertex);
         for (int i = 0; i < super.getNumNeighbors(vertex); i++){
-            dfsHelper(neighbors.get(i));
+            dfsPrintR(neighbors.get(i));
         }
     }
 

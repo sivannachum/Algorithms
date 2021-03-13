@@ -3,7 +3,7 @@ Sivan Nachum
 
 3/13/21
 
-Two representations of GraphAdjList, different from the ones in the Graphs folder, along with main classes for each.
+Two representations of GraphAdjList, different from the ones in the Graphs folder.
 Here GraphDFSAdjList is NOT its own runnable class (unlike in the Graphs folder).
 The GraphAdjList has methods isConnected and connectedComponents.
 

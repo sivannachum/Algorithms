@@ -1,5 +1,5 @@
 // To compile and run Graphs and DGraphs
-// put the Graphs and DGraphs in a folder called Src and navigate to that folder using cd commands
+// put the Graphs and DGraphs folders in a folder called Src and navigate to that folder using cd commands
 javac -d AllGraphClasses/ Src/Graphs/*.java Src/DGraphs/*.java
 
 // TESTS, APPS and DEMOS
@@ -12,7 +12,7 @@ java -cp AllGraphClasses DGraphs.DGraphAdjMatrixMain
 java -cp AllGraphClasses DGraphs.DGraphEdgeListMain
 
 // This main allows you to interact just with all the undirected graph classes at once
-java -cp Level2Classes Graphs.GraphMain
+java -cp AllGraphClasses Graphs.GraphMain
 //Mains for each individual class:
 java -cp AllGraphClasses Graphs.GraphAdjListMain
 java -cp AllGraphClasses Graphs.GraphAdjMatrixMain

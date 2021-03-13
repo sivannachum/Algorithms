@@ -20,7 +20,7 @@ public abstract class Graph {
     // Name:    setNumVertices
     // Input: 	the new number of vertices for the graph
     // Output:	none
-    //          sets the number of vertices to the given input, creates a new cleared adjacency list
+    //          sets the number of vertices to the given input
     //-------------------------------------
     public abstract void setNumVertices(int numVertices);
 
@@ -48,7 +48,7 @@ public abstract class Graph {
     // Name:    addEdge
     // Input: 	two vertices u and v
     // Output:	none
-    //          adds an undirected edge between the vertices u and v in the adjacency list
+    //          adds an undirected edge between the vertices u and v
     //-------------------------------------
     public abstract void addEdge(int u, int v);
 
@@ -57,7 +57,7 @@ public abstract class Graph {
     // Name:    removeEdge
     // Input: 	two vertices u and v
     // Output:	none
-    //          removes one undirected edge between the vertices u and v in the adjacency list
+    //          removes one undirected edge between the vertices u and v
     //-------------------------------------
     public abstract void removeEdge(int u, int v);
 
@@ -78,21 +78,13 @@ public abstract class Graph {
     //-------------------------------------
     public abstract boolean isEmpty();
 
-    //-------------------------------------
-    // Function
-    // Name:    isSimple
-    // Input: 	none
-    // Output:	true if the graph is simple (has no self-loops or multiple edges between vertices), false otherwise
-    //-------------------------------------
-    public abstract boolean isSimple();
-
     // Functions for printing
     //-------------------------------------
     // Function
     // Name:    printGraph
     // Input: 	none
     // Output:	none
-    //          prints out the adjacency list representation of the graph
+    //          prints out the graph
     //-------------------------------------
 	public abstract void printGraph();
 
@@ -106,16 +98,16 @@ public abstract class Graph {
 
     // File I/O
     //-------------------------------------
-    // Function - referenced w3schools code for basic file I/O at https://www.w3schools.com/java/java_files_create.asp
+    // Function
     // Name:    writeToFile
-    // Input: 	none
+    // Input: 	the name of the file to write the graph to
     // Output:	none
     //          writes the serialized version of the graph to a file
     //-------------------------------------
     public abstract void writeToFile(String filename);
 
     //-------------------------------------
-    // Function - referenced w3schools code for basic file I/O at https://www.w3schools.com/java/java_files_read.asp
+    // Function
     // Name:    readFromFile
     // Input: 	the name of the file to read from
     // Output:	none

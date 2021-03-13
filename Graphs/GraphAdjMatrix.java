@@ -1,9 +1,10 @@
 //-----------------------------------------------------
 // Author: 		Sivan Nachum
-// Date: 		March 1, 2021
+// Date: 		March 9, 2021
 // Description:	Java code to create an undirectional Graph representation via an adjacency matrix
 //-----------------------------------------------------
 package Graphs;
+import DGraphs.*;
 import java.util.Random;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -234,10 +235,7 @@ public class GraphAdjMatrix extends Graph {
     // Output:	true if the vertices have an edge between them, false otherwise
     //-------------------------------------
     public boolean hasEdge(int u, int v){
-        if (matrix[u][v] == 1){
-            return true;
-        }
-        return false;
+        return matrix[u][v] == 1;
     }
 
     //-------------------------------------
@@ -330,7 +328,7 @@ public class GraphAdjMatrix extends Graph {
     //-------------------------------------
     // Function - referenced w3schools code at https://www.w3schools.com/java/java_files_create.asp
     // Name:    writeToFile
-    // Input: 	none
+    // Input: 	the name of the file to write the graph to
     // Output:	none
     //          writes the serialized version of the graph to a file
     //-------------------------------------
@@ -403,6 +401,24 @@ public class GraphAdjMatrix extends Graph {
     }
 
     // Converters
+    //-------------------------------------
+    // Function
+    // Name:    convertToDirectedGraph
+    // Input: 	none
+    // Output:	a DGraphAdjMatrix representation of the same graph
+    //-------------------------------------
+    public DGraphAdjMatrix convertToDirectedGraph(){
+        DGraphAdjMatrix directed = new DGraphAdjMatrix(numVertices);
+        for (int row = 0; row < numVertices; row++) {
+            for (int column = 0; column < numVertices; column++){
+                if (matrix[row][column] == 1){
+                    directed.addEdge(row, column);
+                }
+            }
+        }
+        return directed;
+    }
+
     //-------------------------------------
     // Function
     // Name:    convertToAdjList

@@ -1,9 +1,10 @@
 //-----------------------------------------------------
 // Author: 		Sivan Nachum
-// Date: 		March 6, 2021
+// Date: 		March 9, 2021
 // Description:	Java code to create an undirectional Graph representation via an adjacency list
 //              The graph can run the DFS algorithm and keeps track of which vertices have been visited
 //-----------------------------------------------------
+package Graphs;
 import java.util.LinkedList;
 
 public class GraphDFSAdjList extends GraphAdjList {
@@ -74,11 +75,10 @@ public class GraphDFSAdjList extends GraphAdjList {
     // Output:	the vertices which have been visited
     //-------------------------------------
     public LinkedList<Integer> getVisitedVertices(){
-        int length = visited.length;
         LinkedList<Integer> visitedVertices = new LinkedList<Integer>();
-        for (int i = 0; i < length; i++){
-            if (visited[i]){
-                visitedVertices.add(i);
+        for (int vertex = 0; vertex < visited.length; vertex++){
+            if (visited[vertex]){
+                visitedVertices.add(vertex);
             }
         }
         return visitedVertices;
@@ -131,6 +131,7 @@ public class GraphDFSAdjList extends GraphAdjList {
     }
 
     // Testers
+    //-------------------------------------
     // Function
     // Name:    isVisited
     // Input: 	a vertex number
@@ -163,6 +164,7 @@ public class GraphDFSAdjList extends GraphAdjList {
     // Input: 	the vertex that we are looking at currently
     // Output:	none
     //          Conducts depth-first search recursively
+    //          prints updates along the way
     //-------------------------------------
     public void dfsR(int vertex){
         if (isVisited(vertex)){
@@ -216,8 +218,12 @@ public class GraphDFSAdjList extends GraphAdjList {
         int numVertices = super.getNumVertices();
         boolean[] newVisited = new boolean[numVertices];
         int i = 0;
-        for (i = 0; i < num; i++){
-            newVisited[i] = visited[i];
+        for (i = 0; i < numVertices; i++){
+            if (i < num){
+                newVisited[i] = visited[i];
+            } else {
+                break;
+            }
         }
         while (i < numVertices){
             newVisited[i] = visited[i+1];

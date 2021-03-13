@@ -1,9 +1,10 @@
 //-----------------------------------------------------
 // Author: 		Sivan Nachum
-// Date: 		March 5, 2021
+// Date: 		March 9, 2021
 // Description:	Java code to create an undirectional Graph representation via an adjacency list
 //-----------------------------------------------------
 package Graphs;
+import DGraphs.*;
 import java.util.Random;
 import java.util.LinkedList;
 import java.util.Set;
@@ -26,8 +27,8 @@ public class GraphAdjList extends Graph {
     // Output:	none
     //          creates an object of type GraphAdjList with no vertices or edges
     //-------------------------------------
-    public GraphAdjList(int numVertices){
-        this.numVertices = numVertices;
+    public GraphAdjList(){
+        this.numVertices = 0;
         this.adjLists = null;
     }
 
@@ -118,8 +119,8 @@ public class GraphAdjList extends Graph {
     // Input: 	the number of the vertex you want the neighbors of
     // Output:	the adjacency list of that vertex (which will show who that vertex is connected to)
     //-------------------------------------
-    public LinkedList<Integer> getNeighbors(int i){
-        return adjLists[i];
+    public LinkedList<Integer> getNeighbors(int vertex){
+        return adjLists[vertex];
     }
 
     //-------------------------------------
@@ -128,8 +129,8 @@ public class GraphAdjList extends Graph {
     // Input: 	the number of the vertex you want the number of neighbors of
     // Output:	the number of neighbors that vertex has
     //-------------------------------------
-    public int getNumNeighbors(int i){
-        return adjLists[i].size();
+    public int getNumNeighbors(int vertex){
+        return adjLists[vertex].size();
     }
 
     // Setters
@@ -167,6 +168,7 @@ public class GraphAdjList extends Graph {
     // Input: 	the root vertex from which to conduct depth first search
     // Output:	none
     //          conducts depth-first search by creating a GraphDFSAdjList object and having it do the dfs
+    //          prints updates along the way
     //-------------------------------------
     public void dfs(int root){
         GraphDFSAdjList graph = new GraphDFSAdjList(adjLists);
@@ -382,7 +384,7 @@ public class GraphAdjList extends Graph {
     //-------------------------------------
     // Function - referenced w3schools code for basic file I/O at https://www.w3schools.com/java/java_files_create.asp
     // Name:    writeToFile
-    // Input: 	none
+    // Input: 	the name of the file to write the graph to
     // Output:	none
     //          writes the serialized version of the graph to a file
     //-------------------------------------
@@ -457,6 +459,22 @@ public class GraphAdjList extends Graph {
     // Converters
     //-------------------------------------
     // Function
+    // Name:    convertToDirectedGraph
+    // Input: 	none
+    // Output:	a DGraphAdjList representation of the same graph
+    //-------------------------------------
+    public DGraphAdjList convertToDirectedGraph(){
+        DGraphAdjList directed = new DGraphAdjList(numVertices);
+        for (int vertex = 0; vertex < numVertices; vertex++){
+            for (int connection = 0; connection < adjLists[vertex].size(); connection++){
+                directed.addEdge(vertex, adjLists[vertex].get(connection));
+            }
+        }
+        return directed;
+    }
+
+    //-------------------------------------
+    // Function
     // Name:    convertToAdjMatrix
     // Input: 	none
     // Output:	a GraphAdjMatrix representation of the same graph
@@ -485,7 +503,7 @@ public class GraphAdjList extends Graph {
         for (int vertex = 0; vertex < numVertices; vertex++){
             for (int connection = 0; connection < adjLists[vertex].size(); connection++){
                 if (vertex <= adjLists[vertex].get(connection)){
-                    edgeList.addEdge(vertex, adjLists[vertex].get(connection);
+                    edgeList.addEdge(vertex, adjLists[vertex].get(connection));
                 }
             }
         }

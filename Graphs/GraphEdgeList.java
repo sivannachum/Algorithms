@@ -1,9 +1,10 @@
 //-----------------------------------------------------
 // Author: 		Sivan Nachum
-// Date: 		March 1, 2021
+// Date: 		March 9, 2021
 // Description:	Java code to create an undirectional Graph representation via an edge list
 //-----------------------------------------------------
 package Graphs;
+import DGraphs.*;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.Set;
@@ -269,7 +270,7 @@ public class GraphEdgeList extends Graph {
             toPrint[vertex] = "Edges exist from vertex " + (vertex+1) + " to: ";
         }
         for (Edge connection : edges) { 
-            toPrint[connection.getFirstVertex()] +=  (connection.getSecondVertex()+1) + " ";
+            toPrint[connection.getFirstVertex()] += (connection.getSecondVertex()+1) + " ";
             if (connection.getFirstVertex() != connection.getSecondVertex()){
                 toPrint[connection.getSecondVertex()] += (connection.getFirstVertex()+1) + " ";
             }
@@ -304,7 +305,7 @@ public class GraphEdgeList extends Graph {
     //-------------------------------------
     // Function - referenced w3schools code for basic file I/O at https://www.w3schools.com/java/java_files_create.asp
     // Name:    writeToFile
-    // Input: 	none
+    // Input: 	the name of the file to write the graph to
     // Output:	none
     //          writes the serialized version of the graph to a file
     //-------------------------------------
@@ -377,6 +378,23 @@ public class GraphEdgeList extends Graph {
     }
 
     // Converters
+    //-------------------------------------
+    // Function
+    // Name:    convertToDirectedGraph
+    // Input: 	none
+    // Output:	a DGraphEdgeList representation of the same graph
+    //-------------------------------------
+    public DGraphEdgeList convertToDirectedGraph(){
+        DGraphEdgeList directed = new DGraphEdgeList(numVertices);
+        for (Edge connection : edges){
+            directed.addEdge(connection.getFirstVertex(), connection.getSecondVertex());
+            if (connection.getFirstVertex() != connection.getSecondVertex()){
+                directed.addEdge(connection.getSecondVertex(), connection.getFirstVertex());
+            }
+        }
+        return directed;
+    }
+
     //-------------------------------------
     // Function
     // Name:    convertToAdjMatrix

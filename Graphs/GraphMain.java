@@ -88,7 +88,7 @@ public class GraphMain {
                                     "m = Adjacency Matrix\n" +
                                     "a = Adjacency List\n" +
                                     "e = Edge List");
-                String type = scan.nextLine();
+                String type = "";
                 while ((type = scan.nextLine()).equals("")){
                     ;
                 }
@@ -127,7 +127,7 @@ public class GraphMain {
                                     "m = Adjacency Matrix\n" +
                                     "a = Adjacency List\n" +
                                     "e = Edge List");
-                String type = scan.nextLine();
+                String type = "";
                 while ((type = scan.nextLine()).equals("")){
                     ;
                 }
@@ -160,7 +160,7 @@ public class GraphMain {
                         System.out.println("\nImproper input, try again.");
                         continue;
                     }
-                    graph.addEdge(u-1, w)-1; 
+                    graph.addEdge(u-1, w-1); 
                 } catch(InputMismatchException e) {
                     System.out.println("\nImproper input, try again.");
                 }
@@ -293,11 +293,32 @@ public class GraphMain {
                 else{
                     System.out.println("\nGraph is not empty.");
                 }
-                if (graph.isSimple()){
-                    System.out.println("Graph is simple.");
+                if (graph instanceof GraphAdjMatrix){
+                    GraphAdjMatrix tempGraph = (GraphAdjMatrix) graph;
+                    if (tempGraph.isSimple()){
+                        System.out.println("Graph is simple.");
+                    }
+                    else{
+                        System.out.println("Graph is not simple.");
+                    }
                 }
-                else{
-                    System.out.println("Graph is not simple.");
+                else if (graph instanceof GraphAdjList){
+                    GraphAdjList tempGraph = (GraphAdjList) graph;
+                    if (tempGraph.isSimple()){
+                        System.out.println("Graph is simple.");
+                    }
+                    else{
+                        System.out.println("Graph is not simple.");
+                    }
+                }
+                else if (graph instanceof GraphEdgeList){
+                    GraphEdgeList tempGraph = (GraphEdgeList) graph;
+                    if (tempGraph.isSimple()){
+                        System.out.println("Graph is simple.");
+                    }
+                    else{
+                        System.out.println("Graph is not simple.");
+                    }
                 }
             }
 

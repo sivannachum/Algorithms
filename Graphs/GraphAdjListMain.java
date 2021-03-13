@@ -1,6 +1,6 @@
 //-----------------------------------------------------
 // Author: 		Sivan Nachum
-// Date: 		Feb 26, 2021
+// Date: 		March 9, 2021
 // Description:	Main program to interactively create a GraphAdjList object
 //-----------------------------------------------------
 package Graphs;
@@ -53,6 +53,7 @@ public class GraphAdjListMain {
             else if (reply.equals("i")){
                 graph = new GraphAdjList();
             }
+            
             // initialize a graph with a number of vertices specified by the user
             else if (reply.equals("iv")){
                 System.out.println("\nHow many vertices would you like?");
@@ -177,10 +178,6 @@ public class GraphAdjListMain {
 
             // run dfs on the graph
             else if (reply.equals("dfs")){
-                if (graph == null){
-                    System.out.println("\nPlease initialize a graph first.");
-                    continue;
-                }
                 System.out.println("\nWhat vertex would you like to start dfs from?");
                 try{
                     int v = scan.nextInt();

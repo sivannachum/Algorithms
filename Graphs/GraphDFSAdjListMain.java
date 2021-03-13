@@ -3,6 +3,8 @@
 // Date: 		March 6, 2021
 // Description:	Main program to interactively create a GraphDFSAdjList object
 //-----------------------------------------------------
+package Graphs;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Arrays;

@@ -216,8 +216,12 @@ public class GraphDFSAdjList extends GraphAdjList {
         int numVertices = super.getNumVertices();
         boolean[] newVisited = new boolean[numVertices];
         int i = 0;
-        for (i = 0; i < num; i++){
-            newVisited[i] = visited[i];
+        for (i = 0; i < numVertices; i++){
+            if (i < num){
+                newVisited[i] = visited[i];
+            } else {
+                break;
+            }
         }
         while (i < numVertices){
             newVisited[i] = visited[i+1];

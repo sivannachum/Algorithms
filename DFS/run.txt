@@ -5,4 +5,4 @@ javac -d Classes/ Src/*.java
 
 // Run individual tests for each class:
 java -cp Classes GraphAdjListMain
-java -cp Classes GraphDFSAdjListMain
+java -cp Classes DGraphAdjListMain

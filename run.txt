@@ -1,0 +1,45 @@
+// cd Homework4
+
+// To compile and run Level 1 (isConnected and connectedComponents):
+javac -d Level1Classes/ Src/Level1/*.java
+
+// TESTS, APPS and DEMOS
+// Individual tests for each class
+// Note that finding out if the graph is connected is considered part of learning graph properties
+java -cp Level1Classes GraphAdjListMain
+
+
+// To compile and run Level 2 (directed graphs)
+javac -d Level2Classes/ Src/Level2/Graphs/*.java Src/Level2/DGraphs/*.java
+
+// TESTS, APPS and DEMOS
+// Individual tests for each class
+// This main allows you to interact with all the graph classes (undirected and directed) at once basically
+java -cp Level2Classes DGraphs.AllGraphsMain
+// Mains for each individual class:
+java -cp Level2Classes DGraphs.DGraphAdjListMain
+java -cp Level2Classes DGraphs.DGraphAdjMatrixMain
+java -cp Level2Classes DGraphs.DGraphEdgeListMain
+
+// This main allows you to interact just with all the undirected graph classes at once
+java -cp Level2Classes Graphs.GraphMain
+//Mains for each individual class:
+java -cp Level2Classes Graphs.GraphAdjListMain
+java -cp Level2Classes Graphs.GraphAdjMatrixMain
+java -cp Level2Classes Graphs.GraphEdgeListMain
+
+
+// To compile and run Level 3 (advanced DFS on a directed graph)
+javac -d Level3Classes/ Src/Level3/*.java
+
+// TESTS, APPS and DEMOS
+// Individual tests for each class
+java -cp Level3Classes DGraphAdjListMain
+
+
+// To compile and run Level 4 (getting the DFS tree of a directed graph)
+javac -d Level4Classes/ Src/Level4/*.java
+
+// TESTS, APPS and DEMOS
+// Individual tests for each class
+java -cp Level4Classes DGraphAdjListMain

@@ -1,10 +1,12 @@
 //-----------------------------------------------------
 // Author: 		Sivan Nachum
-// Date: 		March 12, 2021
+// Date: 		March 21, 2021
 // Description:	Main program to interactively create a DGraphAdjList object
 //-----------------------------------------------------
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.HashSet;
 
 public class DGraphAdjListMain {
     //-------------------------------------
@@ -32,9 +34,16 @@ public class DGraphAdjListMain {
                                 "re = remove an edge\n" + 
                                 "he = check if the graph has a certain edge\n" +
                                 "v = insert vertices\n" +
-                                "dv = delete a vertex\n" +
+                                "dv = delete a vertex AND adjust vertex numbers\n" +
+                                "rv = remove a vertex of out-degree zero without adjusting vertex numbers\n" +
+                                "id = get a vertex of in-degree 0, if one exists\n" +
+                                "od = get a vertex of out-degree 0, if one exists\n" +
                                 "dfs = run dfs from a selected vertex\n" +
                                 "tr = get the dfs tree for a selected vertex\n" +
+                                "ts = get a topological sorting of the graph using DFS\n" +
+                                "tsk = get a topological sorting of the graph using Kahn's algorithm\n" +
+                                "ch = check if a given ordered list of vertices is a topological sort for the graph\n" +
+                                "rev = see the reversed graph\n" +
                                 "gp = learn about graph properties\n" +
                                 "p = print graph\n" +
                                 "rf = read a graph from a file\n" +
@@ -160,9 +169,9 @@ public class DGraphAdjListMain {
                 }
             }
 
-            // delete a vertex
+            // delete a vertex AND adjust vertex numbers
             else if (reply.equals("dv")){
-                System.out.println("\nWhat vertex would you like to delete?");
+                System.out.println("\nWhat vertex would you like to delete? Note that this action will alter vertex numbers.");
                 try{
                     int v = scan.nextInt();
                     if (v < 1 || v > graph.getNumVertices()){
@@ -172,6 +181,47 @@ public class DGraphAdjListMain {
                     graph.deleteVertex(v-1); 
                 } catch(InputMismatchException e) {
                     System.out.println("\nImproper input, try again.");
+                }
+            }
+
+            // remove a vertex WITHOUT adjusting vertex numbers
+            else if (reply.equals("rv")){
+                System.out.println("\nWhat vertex would you like to remove? Please ensure that this vertex has out-degree zero.");
+                try{
+                    int v = scan.nextInt();
+                    if (v < 1 || v > graph.getNumVertices()){
+                        System.out.println("\nImproper input, try again.");
+                        continue;
+                    }
+                    if (graph.getNumNeighbors(v-1) != 0){
+                        System.out.println("Vertex " + v + " does not have out-degree zero.");
+                        continue;
+                    }
+                    graph.removeVertex(v-1); 
+                } catch(InputMismatchException e) {
+                    System.out.println("\nImproper input, try again.");
+                }
+            }
+
+            // get a vertex of in-degree 0, if one exists
+            else if (reply.equals("id")){
+                int vertex = graph.getVertexInDegreeZero();
+                if (vertex == -1){
+                    System.out.println(vertex);
+                }
+                else{
+                    System.out.println(vertex+1);
+                }
+            }
+
+            // get a vertex of out-degree 0, if one exists
+            else if (reply.equals("od")){
+                int vertex = graph.getVertexOutDegreeZero();
+                if (vertex == -1){
+                    System.out.println(vertex);
+                }
+                else{
+                    System.out.println(vertex+1);
                 }
             }
 
@@ -192,14 +242,14 @@ public class DGraphAdjListMain {
 
             // get the dfs tree for a selected vertex
             else if (reply.equals("tr")){
-                System.out.println("\nWhat vertex would you like to start dfs from?");
+                System.out.println("\nWhat vertex would you like to get the dfs tree for?");
                 try{
                     int v = scan.nextInt();
                     if (v < 1 || v > graph.getNumVertices()){
                         System.out.println("\nImproper input, try again.");
                         continue;
                     }
-                    DGraphAdjList tempGraph = graph.dfs(v-1);
+                    DGraphAdjList tempGraph = graph.dfsTree(v-1);
                     System.out.println("\nTree Graph:");
                     tempGraph.printGraph();
                     System.out.println();
@@ -208,7 +258,86 @@ public class DGraphAdjListMain {
                     System.out.println("\nImproper input, try again.");
                 }
             }
-            
+
+            // get a topological sorting of the graph using DFS
+            else if (reply.equals("ts")){
+                if (!graph.isAcyclic()){
+                    System.out.println("\nThis graph is cyclic. No topological sorting is possible.");
+                    continue;
+                }
+                System.out.println();
+                int[] sorted = graph.topologicalSortDFS();
+                for (int vertex : sorted){
+                    System.out.print(vertex+1 + " ");
+                }
+                System.out.println();
+            }
+
+            // get a topological sorting of the graph using Kahn's algorithm
+            else if (reply.equals("tsk")){
+                if (!graph.isAcyclic()){
+                    System.out.println("\nThis graph is cyclic. No topological sorting is possible.");
+                    continue;
+                }
+                System.out.println();
+                int[] sorted = graph.topologicalSortKahn();
+                for (int vertex : sorted){
+                    System.out.print(vertex+1 + " ");
+                }
+                System.out.println();
+            }
+
+            // check if a given ordered list of vertices is a topological sort for the graph
+            else if (reply.equals("ch")){
+                if (graph.getNumVertices() == 0){
+                    System.out.println("\nNo topological sorting is possible since there are no vertices.");
+                    continue;
+                }
+                if (!graph.isAcyclic()){
+                    System.out.println("\nThis graph is cyclic. No topological sorting is possible.");
+                    continue;
+                }
+                System.out.println("\nPlease enter the ordering of vertices you would like to check.\n" + 
+                                    "Make sure to include all vertices and not to repeat any.\n" + 
+                                    "Example input for a graph with 4 vertices: 4 1 3 2");
+                int count = 0;
+                int[] orderedList = new int[graph.getNumVertices()];
+                Set<Integer> orderedSet = new HashSet<Integer>();
+                boolean toBreak = false;
+                try{
+                    while (count < graph.getNumVertices()){
+                        int v = scan.nextInt();
+                        if (v < 1 || v > graph.getNumVertices() || orderedSet.contains(v)){
+                            System.out.println("\nImproper input, try again.");
+                            toBreak = true;
+                        }
+                        orderedList[count] = v-1;
+                        orderedSet.add(v);
+                        count++;
+                    }
+                    if (toBreak){
+                        continue;
+                    }
+                    if (graph.isTopologicalSort(orderedList)){
+                        System.out.println("\nThe given ordering is a topological sort of the DAG.");
+                    }
+                    else {
+                        System.out.println("\nThe given ordering is not a topological sort of the DAG.");
+                    }
+                } catch(InputMismatchException e) {
+                    System.out.println("\nImproper input, try again.");
+                }
+            }
+
+            // see the reversed graph
+            else if (reply.equals("rev")){
+                DGraphAdjList reverse = graph.reverseGraph();
+                System.out.println();
+                reverse.printGraph();
+                System.out.println();
+                System.out.println(reverse);
+            }
+
             // learn about graph properties
             else if (reply.equals("gp")){
                 if (graph.isEmpty()){
@@ -216,6 +345,12 @@ public class DGraphAdjListMain {
                 }
                 else{
                     System.out.println("\nGraph is not empty.");
+                }
+                if (graph.isAcyclic()){
+                    System.out.println("Graph is a DAG (directed acyclic graph).");
+                }
+                else{
+                    System.out.println("Graph is not a DAG (directed acyclic graph); the graph contains a cycle.");
                 }
             }
 

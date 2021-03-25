@@ -1,9 +1,11 @@
 //-----------------------------------------------------
 // Author: 		Sivan Nachum
-// Date: 		March 12, 2021
+// Date: 		March 21, 2021
 // Description:	Java code to create a directional Graph representation via an adjacency list
 //-----------------------------------------------------
 import java.util.Random;
+// Referenced java doc: https://docs.oracle.com/javase/8/docs/api/java/util/LinkedList.html
+// to understand how to use a LinkedList as a queue
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.HashSet;
@@ -111,8 +113,8 @@ public class DGraphAdjList {
     // Input: 	the number of the vertex you want the neighbors of
     // Output:	the adjacency list of that vertex (which will show who that vertex is connected to)
     //-------------------------------------
-    public LinkedList<Integer> getNeighbors(int i){
-        return adjLists[i];
+    public LinkedList<Integer> getNeighbors(int vertex){
+        return adjLists[vertex];
     }
 
     //-------------------------------------
@@ -121,8 +123,39 @@ public class DGraphAdjList {
     // Input: 	the number of the vertex you want the number of neighbors of
     // Output:	the number of neighbors that vertex has
     //-------------------------------------
-    public int getNumNeighbors(int i){
-        return adjLists[i].size();
+    public int getNumNeighbors(int vertex){
+        return adjLists[vertex].size();
+    }
+
+    //-------------------------------------
+    // Function
+    // Name:    getVertexInDegreeZero
+    // Input: 	none
+    // Output:	a vertex of in-degree zero, or -1 if none exists
+    //-------------------------------------
+    public int getVertexInDegreeZero(){
+        DGraphAdjList reverse = reverseGraph();
+        for (int vertex = 0; vertex < numVertices; vertex++){
+            if (reverse.getNumNeighbors(vertex) == 0){
+                return vertex;
+            }
+        }
+        return -1;
+    }
+
+    //-------------------------------------
+    // Function
+    // Name:    getVertexOutDegreeZero
+    // Input: 	none
+    // Output:	a vertex of out-degree zero, or -1 if none exists
+    //-------------------------------------
+    public int getVertexOutDegreeZero(){
+        for (int vertex = 0; vertex < numVertices; vertex++){
+            if (getNumNeighbors(vertex) == 0){
+                return vertex;
+            }
+        }
+        return -1;
     }
 
     // Setters
@@ -156,13 +189,13 @@ public class DGraphAdjList {
     // Depth First Search
     //-------------------------------------
     // Function
-    // Name:    dfs
+    // Name:    dfsTree
     // Input: 	the root vertex from which to conduct depth first search
     // Output:	returns the dfs tree for this root vertex as an instance of DGraphAdjList
     //-------------------------------------
-    public DGraphAdjList dfs(int root){
+    public DGraphAdjList dfsTree(int root){
         DGraphDFSAdjList graph = new DGraphDFSAdjList(adjLists);
-        return graph.dfs(root);
+        return graph.dfsTree(root);
     }
 
     //-------------------------------------
@@ -183,6 +216,78 @@ public class DGraphAdjList {
         for (DEdge edge : graph.getColoredEdges()){
             System.out.println(edge);
         }
+    }
+
+    // Topological Sort
+    //-------------------------------------
+    // Function
+    // Name:    topologicalSortDFS
+    // Input: 	none
+    // Output:	returns a topological sort of the graph; assumes the graph is a DAG
+    //          uses DFS to make the topological sort
+    //-------------------------------------
+    public int[] topologicalSortDFS(){
+        if (numVertices <= 0){
+            return new int[]{};
+        }
+        DGraphDFSAdjList graph = new DGraphDFSAdjList(adjLists);
+        return graph.topologicalSortDFS();
+    }
+
+    //-------------------------------------
+    // Function
+    // Name:    topologicalSortKahn
+    // Input: 	none
+    // Output:	returns a topological sort of the graph; assumes the graph is a DAG
+    //          uses Kahn's algorithm to make the topological sort
+    //-------------------------------------
+    public int[] topologicalSortKahn(){
+        if (numVertices <= 0){
+            return new int[]{};
+        }
+        DGraphAdjList reverse = reverseGraph();
+        int[] indegree = new int[numVertices];
+        LinkedList<Integer> queue = new LinkedList<Integer>();
+        for (int vertex = 0; vertex < numVertices; vertex++){
+            indegree[vertex] = reverse.getNumNeighbors(vertex);
+            if (indegree[vertex] == 0){
+                queue.add(vertex);
+            }
+        }
+
+        int[] topologicalOrder = new int[numVertices];
+        int orderIndex = 0;
+
+        while (queue.peekFirst() != null){
+            int vertex = queue.pollFirst();
+            topologicalOrder[orderIndex] = vertex;
+            orderIndex++;
+            for (int connection : getNeighbors(vertex)){
+                indegree[connection] = indegree[connection]-1;
+                if (indegree[connection] == 0){
+                    queue.add(connection);
+                }
+            }
+        }
+        return topologicalOrder;
+    }
+
+    // Reverser
+    //-------------------------------------
+    // Function
+    // Name:    reverseGraph
+    // Input: 	none
+    // Output:	returns a DGraphAdjList that is the reverse of this one,
+    //          meaning it has a directed edge i->j exactly when this graph has the directed edge j->i
+    //-------------------------------------
+    public DGraphAdjList reverseGraph(){
+        DGraphAdjList reverse = new DGraphAdjList(numVertices);
+        for (int vertex = 0; vertex < numVertices; vertex++){
+            for (int connection : getNeighbors(vertex)){
+                reverse.addEdge(connection, vertex);
+            }
+        }
+        return reverse;
     }
 
     // Modifiers
@@ -212,7 +317,7 @@ public class DGraphAdjList {
     // Name:    deleteVertex
     // Input: 	the number of the vertex to delete
     // Output:	none
-    //          deletes the vertex from the graph
+    //          deletes the vertex from the graph and adjusts vertex numbers
     //-------------------------------------
     public void deleteVertex(int num){
         numVertices -= 1;
@@ -245,6 +350,19 @@ public class DGraphAdjList {
             }
         }
         adjLists = newAdjLists;
+    }
+
+    //-------------------------------------
+    // Function
+    // Name:    removeVertex
+    // Input: 	the number of a vertex which has out-degree zero
+    // Output:	removes vertex num and its in-coming edges from the graph but does NOT adjust vertex numbers
+    //-------------------------------------
+    public void removeVertex(int num){
+        DGraphAdjList reverse = reverseGraph();
+        for (int connection : reverse.getNeighbors(num)){
+            removeEdge(connection, num);
+        }
     }
 
     //-------------------------------------
@@ -301,6 +419,42 @@ public class DGraphAdjList {
         }
         return empty;
         */
+    }
+
+    //-------------------------------------
+    // Function
+    // Name:    isAcyclic
+    // Input: 	none
+    // Output:	true if the graph is acyclic, false otherwise
+    //-------------------------------------
+    public boolean isAcyclic(){
+        if (numVertices <= 0){
+            return true;
+        }
+        else {
+            DGraphDFSAdjList graph = new DGraphDFSAdjList(adjLists);
+            return graph.isAcyclic();
+        }
+    }
+
+    //-------------------------------------
+    // Function
+    // Name:    isTopologicalSort
+    // Input: 	an ordered list of the graph's vertices
+    // Output:	true if the given ordering is a topological sorting of the dag, false otherwise
+    //-------------------------------------
+    public boolean isTopologicalSort(int[] orderedList){
+        DGraphAdjList reverse = reverseGraph();
+        for (int vertex : orderedList){
+            // if this vertex does not have in-degree 0
+            if (reverse.getNumNeighbors(vertex) != 0){
+                return false;
+            }
+            for (int neighbor : getNeighbors(vertex)){
+                reverse.removeEdge(neighbor, vertex);
+            }
+        }
+        return true;
     }
 
     // Functions for printing

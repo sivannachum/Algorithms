@@ -1,6 +1,6 @@
 //-----------------------------------------------------
 // Author: 		Sivan Nachum
-// Date: 		March 12, 2021
+// Date: 		March 21, 2021
 // Description:	Java code to create an directional Graph representation via an adjacency list
 //              The graph can run the DFS algorithm and keeps track of which vertices have been visited
 //              Note: this class is generally only for use within the DGraphAdjList class
@@ -11,6 +11,10 @@ public class DGraphDFSAdjList extends DGraphAdjList {
     // Vertices are WHITE before discovery, GRAY when discovered, and BLACK when finished
     private String[] vertexColor;
     private int[] vertexDiscoveryTime;
+    // the vertices in order of finishing times from most to least recent
+    private int[] reversedFinishingTimes;
+    // keeps track of where we are in the reversedFinishingTimes array
+    private int finishingTimesIndex;
     private int time;
     private LinkedList<DEdge> coloredEdges;
 
@@ -26,10 +30,13 @@ public class DGraphDFSAdjList extends DGraphAdjList {
         super(numVertices);
         vertexColor = new String[numVertices];
         vertexDiscoveryTime = new int[numVertices];
+        reversedFinishingTimes = new int[numVertices];
         for (int i = 0; i < numVertices; i++){
             vertexColor[i] = "WHITE";
             vertexDiscoveryTime[i] = -1;
+            reversedFinishingTimes[i] = -1;
         }
+        finishingTimesIndex = numVertices-1;
         time = 0;
         coloredEdges = new LinkedList<DEdge>();
     }
@@ -46,10 +53,13 @@ public class DGraphDFSAdjList extends DGraphAdjList {
         int numVertices = super.getNumVertices();
         vertexColor = new String[numVertices];
         vertexDiscoveryTime = new int[numVertices];
+        reversedFinishingTimes = new int[numVertices];
         for (int i = 0; i < numVertices; i++){
             vertexColor[i] = "WHITE";
             vertexDiscoveryTime[i] = -1;
+            reversedFinishingTimes[i] = -1;
         }
+        finishingTimesIndex = numVertices-1;
         time = 0;
         coloredEdges = new LinkedList<DEdge>();
     }
@@ -65,10 +75,13 @@ public class DGraphDFSAdjList extends DGraphAdjList {
         super(numVertices, numEdges);
         vertexColor = new String[numVertices];
         vertexDiscoveryTime = new int[numVertices];
+        reversedFinishingTimes = new int[numVertices];
         for (int i = 0; i < numVertices; i++){
             vertexColor[i] = "WHITE";
             vertexDiscoveryTime[i] = -1;
+            reversedFinishingTimes[i] = -1;
         }
+        finishingTimesIndex = numVertices-1;
         time = 0;
         coloredEdges = new LinkedList<DEdge>();
     }
@@ -114,7 +127,7 @@ public class DGraphDFSAdjList extends DGraphAdjList {
     // Function
     // Name:    getColoredEdges
     // Input: 	none
-    // Output:	the vertices which have been visited
+    // Output:	the colored edges from the DFS
     //-------------------------------------
     public LinkedList<DEdge> getColoredEdges(){
         return coloredEdges;
@@ -127,18 +140,21 @@ public class DGraphDFSAdjList extends DGraphAdjList {
     // Input: 	the new number of vertices for the graph
     // Output:	none
     //          sets the number of vertices to the given input, 
-    //          creates a new cleared adjacency list, vertexColor array, vertexDiscoveryTime array,
-    //          coloredEdges list, and resets the time
+    //          creates a new cleared adjacency list, vertexColor array, vertexDiscoveryTime array, reversedFinishingTimes array
+    //          coloredEdges list, and resets the time and finishingTimesIndex
     //-------------------------------------
     @Override
     public void setNumVertices(int numVertices){
         super.setNumVertices(numVertices);
         vertexColor = new String[numVertices];
         vertexDiscoveryTime = new int[numVertices];
+        reversedFinishingTimes = new int[numVertices];
         for (int i = 0; i < numVertices; i++){
             vertexColor[i] = "WHITE";
             vertexDiscoveryTime[i] = -1;
+            reversedFinishingTimes[i] = -1;
         }
+        finishingTimesIndex = numVertices-1;
         time = 0;
         coloredEdges = new LinkedList<DEdge>();
     }
@@ -149,8 +165,8 @@ public class DGraphDFSAdjList extends DGraphAdjList {
     // Input: 	an adjacency list
     // Output:	none
     //          sets the graph's adjacency list to the given input, updates the number of vertices accordingly, 
-    //          creates a new cleared adjacency list, vertexColor array, vertexDiscoveryTime array
-    //          coloredEdges list, and resets the time
+    //          creates a new cleared adjacency list, vertexColor array, vertexDiscoveryTime array, reversedFinishingTimes array,
+    //          coloredEdges list, and resets the time and finishingTimesIndex
     //-------------------------------------
     @Override
     public void setAdjacencyList(LinkedList<Integer>[] newList){
@@ -158,10 +174,13 @@ public class DGraphDFSAdjList extends DGraphAdjList {
         int numVertices = newList.length;
         vertexColor = new String[numVertices];
         vertexDiscoveryTime = new int[numVertices];
+        reversedFinishingTimes = new int[numVertices];
         for (int i = 0; i < numVertices; i++){
             vertexColor[i] = "WHITE";
             vertexDiscoveryTime[i] = -1;
+            reversedFinishingTimes[i] = -1;
         }
+        finishingTimesIndex = numVertices-1;
         time = 0;
         coloredEdges = new LinkedList<DEdge>();
     }
@@ -204,10 +223,26 @@ public class DGraphDFSAdjList extends DGraphAdjList {
     // Function
     // Name:    dfs
     // Input: 	the root vertex
+    // Output:	none
+    //          conducts depth-first search
+    //-------------------------------------
+    public void dfs(int root){
+        dfsR(root);
+        for (int vertex = 0; vertex < super.getNumVertices(); vertex++){
+            if (!isVisited(vertex)){
+                dfsR(vertex);
+            }
+        }
+    }
+
+    //-------------------------------------
+    // Function
+    // Name:    dfsTree
+    // Input: 	the root vertex
     // Output:	returns the dfs tree for this root vertex as an instance of DGraphAdjList
     //-------------------------------------
     @Override
-    public DGraphAdjList dfs(int root){
+    public DGraphAdjList dfsTree(int root){
         dfsR(root);
         DGraphAdjList tree = new DGraphAdjList(super.getNumVertices());
         for (DEdge edge : getColoredEdges()){
@@ -255,6 +290,8 @@ public class DGraphDFSAdjList extends DGraphAdjList {
             }
         }
         setVertexColor(vertex, "BLACK");
+        reversedFinishingTimes[finishingTimesIndex] = vertex;
+        finishingTimesIndex--;
     }
 
     //-------------------------------------
@@ -317,63 +354,40 @@ public class DGraphDFSAdjList extends DGraphAdjList {
         setVertexColor(vertex, "BLACK");
     }
 
-    // Modifiers
+    // Topological Sort
     //-------------------------------------
     // Function
-    // Name:    addVertices
-    // Input: 	the number of vertices to add
-    // Output:	none
-    //          adds num vertices to the graph
+    // Name:    topologicalSortDFS
+    // Input: 	none
+    // Output:	returns a topological sort of the graph; assumes the graph is a DAG
+    //          uses DFS to make the topological sort
     //-------------------------------------
-    @Override
-    public void addVertices(int num){
-        int oldNumVertices = super.getNumVertices();
-        super.addVertices(num);
-        String[] newVertexColor = new String[oldNumVertices+num];
-        int[] newVertexDiscoveryTime = new int[oldNumVertices+num];
-        int i = 0;
-        for (i = 0; i < oldNumVertices; i++){
-            newVertexColor[i] = vertexColor[i];
-            newVertexDiscoveryTime[i] = vertexDiscoveryTime[i];
-        }
-        while (i < oldNumVertices+num){
-            newVertexColor[i] = "WHITE";
-            newVertexDiscoveryTime[i] = -1;
-            i++;
-        }
-        vertexColor = newVertexColor;
-        vertexDiscoveryTime = newVertexDiscoveryTime;
-    }
-
-    //-------------------------------------
-    // Function
-    // Name:    deleteVertex
-    // Input: 	the number of the vertex to delete
-    // Output:	none
-    //          deletes the vertex from the graph
-    //-------------------------------------
-    @Override
-    public void deleteVertex(int num){
-        super.deleteVertex(num);
-        int numVertices = super.getNumVertices();
-        String[] newVertexColor = new String[numVertices];
-        int[] newVertexDiscoveryTime = new int[numVertices];
-        int i = 0;
-        for (i = 0; i < numVertices; i++){
-            if (i < num){
-                newVertexColor[i] = vertexColor[i];
-                newVertexDiscoveryTime[i] = vertexDiscoveryTime[i];
-            } else {
-                break;
+    public int[] topologicalSortDFS(){
+        for (int vertex = 0; vertex < super.getNumVertices(); vertex++){
+            if (!isVisited(vertex)){
+                dfsR(vertex);
             }
         }
-        while (i < numVertices){
-            newVertexColor[i] = vertexColor[i+1];
-            newVertexDiscoveryTime[i] = vertexDiscoveryTime[i+1];
-            i++;
+        return reversedFinishingTimes;
+    }
+
+    // Testers
+    //-------------------------------------
+    // Function
+    // Name:    isAcyclic
+    // Input: 	none
+    // Output:	true if the graph is acyclic, false otherwise
+    //          a directed graph is acyclic if and only if a DFS of the graph yields no back edges
+    //-------------------------------------
+    public boolean isAcyclic(){
+        dfs(0);
+        for (DEdge edge : getColoredEdges()){
+            // if the edge is a back edge
+            if (edge.getColor().equals("GRAY")){
+                return false;
+            }
         }
-        vertexColor = newVertexColor;
-        vertexDiscoveryTime = newVertexDiscoveryTime;
+        return true;
     }
 
     // Functions for printing

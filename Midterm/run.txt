@@ -1,0 +1,8 @@
+// cd WednesdayMidterm_Revision
+
+// To compile and run:
+javac -d Classes/ Src/*.java
+
+// TESTS, APPS and DEMOS
+// Individual tests for each class
+java -cp Classes MidtermMain

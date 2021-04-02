@@ -1,4 +1,4 @@
-// cd WednesdayMidterm_Revision
+// cd Midterm
 
 // To compile and run:
 javac -d Classes/ Src/*.java

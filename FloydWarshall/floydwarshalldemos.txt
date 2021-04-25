@@ -24,7 +24,7 @@ java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dg
 
 **** To view the graphs on which you can run the java demo (available in Data/GrfWTxt):
 cd Mathematica
-double-click on 5_ViewWeightedDigraphFromGrfFiles.nb
+double-click on 8_ViewWeightedDigraphFromGrfFiles.nb
 Evaluate the notebook
 select an input from the INPUT menu to view more examples
 

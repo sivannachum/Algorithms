@@ -1,0 +1,30 @@
+FOR THE DEMOS:
+// Must be in Homework8/Java/UnitTests
+
+// To compile and run the FloydWarshall code:
+javac -d ../Classes/FloydWarshallClasses/ ../Src/FloydWarshall/*.java
+// compile the demo drivers
+javac -d ../Classes/FloydWarshallClasses -cp ../Classes/FloydWarshallClasses ../Demos/FloydWarshallMain.java
+
+// list available data
+ls ../../Data/GrfWTxt
+
+// TESTS, APPS and DEMOS
+// Individual tests
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dag01.txt ../../Data/GrfFWSpv/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dag02.txt ../../Data/GrfFWSpv/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/clrsexample.txt ../../Data/GrfFWSpv/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/clrsexample2.txt ../../Data/GrfFWSpv/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dgraph01.txt ../../Data/GrfFWSpv/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dgraph03.txt ../../Data/GrfFWSpv/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dgraph06.txt ../../Data/GrfFWSpv/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dgraph07.txt ../../Data/GrfFWSpv/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dgraph08.txt ../../Data/GrfFWSpv/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dgraphnocycles02.txt ../../Data/GrfFWSpv/
+
+**** To view the graphs on which you can run the java demo (available in Data/GrfWTxt):
+cd Mathematica
+double-click on 5_ViewWeightedDigraphFromGrfFiles.nb
+Evaluate the notebook
+select an input from the INPUT menu to view more examples
+

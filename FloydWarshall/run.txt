@@ -1,0 +1,69 @@
+// Must be in Homework8/Java/UnitTests
+
+// To compile and run the FloydWarshall code:
+javac -d ../Classes/FloydWarshallClasses/ ../Src/FloydWarshall/*.java
+// compile the demo drivers
+javac -d ../Classes/FloydWarshallClasses -cp ../Classes/FloydWarshallClasses ../Demos/FloydWarshallMain.java
+
+// list available data
+ls ../../Data/GrfWTxt
+
+// TESTS, APPS and DEMOS
+// Individual tests
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dag01.txt Output/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dag02.txt Output/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/clrsexample.txt Output/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/clrsexample2.txt Output/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dgraph01.txt Output/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dgraph02.txt Output/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dgraph03.txt Output/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dgraph04.txt Output/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dgraph05.txt Output/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dgraph06.txt Output/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dgraph07.txt Output/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dgraph08.txt Output/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dgraphcycles01.txt Output/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dgraphmultiedge.txt Output/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dgraphnocycles01.txt Output/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dgraphnocycles02.txt Output/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/dgraphonevertex.txt Output/
+java -cp ../Classes/FloydWarshallClasses FloydWarshallMain ../../Data/GrfWTxt/emptygraph.txt Output/
+
+
+// To compile and run the Kruskal code:
+javac -d ../Classes/KruskalClasses/ ../Src/Kruskal/*.java
+// compile the demo drivers
+javac -d ../Classes/KruskalClasses -cp ../Classes/KruskalClasses ../Demos/KruskalMain.java
+
+// list available data
+ls ../../Data/GrfWTxt
+
+// TESTS, APPS and DEMOS
+// Individual tests
+java -cp ../Classes/KruskalClasses KruskalMain ../../Data/GrfWTxt/ugraphconnected01.txt Output/
+java -cp ../Classes/KruskalClasses KruskalMain ../../Data/GrfWTxt/ugraphconnected02.txt Output/
+java -cp ../Classes/KruskalClasses KruskalMain ../../Data/GrfWTxt/ugraphconnected03.txt Output/
+java -cp ../Classes/KruskalClasses KruskalMain ../../Data/GrfWTxt/ugraphconnected04.txt Output/
+java -cp ../Classes/KruskalClasses KruskalMain ../../Data/GrfWTxt/ugraphconnected05.txt Output/
+java -cp ../Classes/KruskalClasses KruskalMain ../../Data/GrfWTxt/ugraphconnected06.txt Output/
+java -cp ../Classes/KruskalClasses KruskalMain ../../Data/GrfWTxt/clrsexample3.txt Output/
+
+
+// To compile and run the Prim code:
+javac -d ../Classes/PrimClasses/ ../Src/Prim/*.java
+// compile the demo drivers
+javac -d ../Classes/PrimClasses -cp ../Classes/PrimClasses ../Demos/PrimMain.java
+
+// list available data
+ls ../../Data/GrfWTxt
+
+// TESTS, APPS and DEMOS
+// Individual tests
+// Note that Prim's algorithm is run from vertex 1 every time
+java -cp ../Classes/PrimClasses PrimMain ../../Data/GrfWTxt/ugraphconnected01.txt Output/
+java -cp ../Classes/PrimClasses PrimMain ../../Data/GrfWTxt/ugraphconnected02.txt Output/
+java -cp ../Classes/PrimClasses PrimMain ../../Data/GrfWTxt/ugraphconnected03.txt Output/
+java -cp ../Classes/PrimClasses PrimMain ../../Data/GrfWTxt/ugraphconnected04.txt Output/
+java -cp ../Classes/PrimClasses PrimMain ../../Data/GrfWTxt/ugraphconnected05.txt Output/
+java -cp ../Classes/PrimClasses PrimMain ../../Data/GrfWTxt/ugraphconnected06.txt Output/
+java -cp ../Classes/PrimClasses PrimMain ../../Data/GrfWTxt/clrsexample3.txt Output/

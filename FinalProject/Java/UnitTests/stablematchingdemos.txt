@@ -1,1 +1,27 @@
+FOR THE DEMOS:
+// Must be in FinalProject/Java/UnitTests
+
+// To compile and run the StableMatching code:
+javac -d ../Classes/ ../Src/*.java
+// compile the demo drivers
+javac -d ../Classes -cp ../Classes ../Demos/StableMatchingMain.java
+
+// list available data
+ls ../../Data/GrfWTxt
+
+// TESTS, APPS and DEMOS
+// Individual tests
+java -cp ../Classes StableMatchingMain ../../Data/GrfWTxt/bipartitegraph01.txt ../../Data/GrfStb/
+java -cp ../Classes StableMatchingMain ../../Data/GrfWTxt/bipartitegraph02.txt ../../Data/GrfStb/
+java -cp ../Classes StableMatchingMain ../../Data/GrfWTxt/bipartitegraph03.txt ../../Data/GrfStb/
+java -cp ../Classes StableMatchingMain ../../Data/GrfWTxt/bipartitegraph04.txt ../../Data/GrfStb/
+java -cp ../Classes StableMatchingMain ../../Data/GrfWTxt/bipartitegraph05.txt ../../Data/GrfStb/
+java -cp ../Classes StableMatchingMain ../../Data/GrfWTxt/bipartitegraph06.txt ../../Data/GrfStb/
+java -cp ../Classes StableMatchingMain ../../Data/GrfWTxt/bipartitegraph07.txt ../../Data/GrfStb/
+
+**** To view the graph and the results of running the stable matching algorithm (StableMatchingMain) (available in Data/GrfStb/):
+cd Mathematica
+double-click on 1_ViewStableMatchings.nb
+Evaluate the notebook
+select an input from the INPUT menu to view more examples
 
